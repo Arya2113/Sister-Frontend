@@ -7,12 +7,13 @@ import { defineConfig } from 'vite'
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
-    tanstackRouter({
-      routesDirectory: './src/routes',
-      generatedRouteTree: './src/routeTree.gen.ts',
-      routeFileIgnorePrefix: '-',
-      quoteStyle: 'single',
-    }),
+    // tanstackRouter({
+    //   routesDirectory: './src/routes',
+    //   generatedRouteTree: './src/routeTree.gen.ts',
+    //   routeFileIgnorePrefix: '-',
+    //   quoteStyle: 'single',
+    //   autoCodeSplitting: true,
+    // }),
     viteReact(),
     tailwindcss(),
   ],
