@@ -3,7 +3,7 @@
 import { createLazyFileRoute } from "@tanstack/react-router"
 import { useState } from "react"
 
-export const Route = createLazyFileRoute("/dashboard/nilai")({
+export const Route = createLazyFileRoute("/Mahasiswa/nilai")({
   component: NilaiPage,
 })
 

@@ -1,61 +1,38 @@
 /// <reference types="vite/client" />
 
-import { Outlet,Link, createRootRoute } from '@tanstack/react-router'
-import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
-import { TanstackDevtools } from '@tanstack/react-devtools'
-import appCss from '../styles.css?url'
+import { Outlet, createRootRoute, redirect } from "@tanstack/react-router"
+import { TanStackRouterDevtools } from "@tanstack/router-devtools"
+import appCss from "../styles.css?url"
+
+function getUserRole(): "mahasiswa" | "dosen" | null {
+  return localStorage.getItem("role") as "mahasiswa" | "dosen" | null
+}
 
 export const Route = createRootRoute({
   head: () => ({
     links: [
       {
-        rel: 'stylesheet',
+        rel: "stylesheet",
         href: appCss,
       },
     ],
   }),
-  component: () => (
-    <>
-      <div className="min-h-screen bg-background">
-        <nav className="bg-card border-b border-border p-4">
-          <div className="max-w-md mx-auto flex justify-center gap-4">
-            <Link
-              to="/role-selection"
-              className="text-foreground hover:text-primary font-medium transition-colors"
-              activeProps={{ className: "text-primary" }}
-            >
-              Role
-            </Link>
-            <Link
-              to="/login"
-              className="text-foreground hover:text-primary font-medium transition-colors"
-              activeProps={{ className: "text-primary" }}
-            >
-              Login
-            </Link>
-            <Link
-              to="/register"
-              className="text-foreground hover:text-primary font-medium transition-colors"
-              activeProps={{ className: "text-primary" }}
-            >
-              Register
-            </Link>
-          </div>
-        </nav>
-        <Outlet />
-                   <TanstackDevtools
-              config={{
-                position: 'bottom-left',
-              }}
-              plugins={[
-                {
-                  name: 'Tanstack Router',
-                  render: <TanStackRouterDevtoolsPanel />,
-                },
-              ]}
-            />
 
-      </div>
-    </>
+  beforeLoad: () => {
+    const role = getUserRole()
+    if (role === "mahasiswa") {
+      throw redirect({ to: "/mahasiswa" })
+    }
+    if (role === "dosen") {
+      throw redirect({ to: "/dosen" })
+    }
+    // kalau belum ada role → biarkan tetap di /
+  },
+
+  component: () => (
+    <div className="min-h-screen bg-white font-sans">
+      <Outlet />
+      <TanStackRouterDevtools />
+    </div>
   ),
 })
