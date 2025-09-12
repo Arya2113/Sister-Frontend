@@ -12,19 +12,33 @@ import { createFileRoute } from '@tanstack/react-router'
 
 import { Route as rootRouteImport } from './routes/__root.tsx'
 import { Route as UploadRouteImport } from './routes/upload.tsx'
+<<<<<<< HEAD
 import { Route as RegisterRouteImport } from './routes/register.tsx'
 import { Route as LoginRouteImport } from './routes/login.tsx'
+=======
+import { Route as RoleSelectionRouteImport } from './routes/role-selection.tsx'
+import { Route as MahasiswaRouteImport } from './routes/mahasiswa.tsx'
+>>>>>>> 09fade2 (selesai king)
 import { Route as IndexRouteImport } from './routes/index.tsx'
-import { Route as DashboardIndexRouteImport } from './routes/dashboard/index.tsx'
+import { Route as DosenIndexRouteImport } from './routes/dosen/index.tsx'
+import { Route as MahasiswaIndexRouteImport } from './routes/Mahasiswa/index.tsx'
+import { Route as DosenGradingRouteImport } from './routes/dosen/grading.tsx'
+import { Route as DosenDashboardRouteImport } from './routes/dosen/dashboard.tsx'
+import { Route as DosenAssignmentRouteImport } from './routes/dosen/assignment.tsx'
+import { Route as DosenAddAssignmentRouteImport } from './routes/dosen/add-assignment.tsx'
+import { Route as MahasiswaRegisterRouteImport } from './routes/Mahasiswa/register.tsx'
+import { Route as MahasiswaLoginRouteImport } from './routes/Mahasiswa/login.tsx'
+import { Route as MahasiswaDashboardRouteImport } from './routes/Mahasiswa/dashboard.tsx'
 
-const DashboardTugasLazyRouteImport = createFileRoute('/dashboard/tugas')()
-const DashboardNilaiLazyRouteImport = createFileRoute('/dashboard/nilai')()
+const MahasiswaTugasLazyRouteImport = createFileRoute('/Mahasiswa/tugas')()
+const MahasiswaNilaiLazyRouteImport = createFileRoute('/Mahasiswa/nilai')()
 
 const UploadRoute = UploadRouteImport.update({
   id: '/upload',
   path: '/upload',
   getParentRoute: () => rootRouteImport,
 } as any)
+<<<<<<< HEAD
 const RegisterRoute = RegisterRouteImport.update({
   id: '/register',
   path: '/register',
@@ -33,6 +47,16 @@ const RegisterRoute = RegisterRouteImport.update({
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
+=======
+const RoleSelectionRoute = RoleSelectionRouteImport.update({
+  id: '/role-selection',
+  path: '/role-selection',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MahasiswaRoute = MahasiswaRouteImport.update({
+  id: '/mahasiswa',
+  path: '/mahasiswa',
+>>>>>>> 09fade2 (selesai king)
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -40,92 +64,223 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const DashboardIndexRoute = DashboardIndexRouteImport.update({
-  id: '/dashboard/',
-  path: '/dashboard/',
+const DosenIndexRoute = DosenIndexRouteImport.update({
+  id: '/dosen/',
+  path: '/dosen/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const DashboardTugasLazyRoute = DashboardTugasLazyRouteImport.update({
-  id: '/dashboard/tugas',
-  path: '/dashboard/tugas',
+const MahasiswaIndexRoute = MahasiswaIndexRouteImport.update({
+  id: '/Mahasiswa/',
+  path: '/Mahasiswa/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MahasiswaTugasLazyRoute = MahasiswaTugasLazyRouteImport.update({
+  id: '/Mahasiswa/tugas',
+  path: '/Mahasiswa/tugas',
   getParentRoute: () => rootRouteImport,
 } as any).lazy(() =>
-  import('./routes/dashboard/tugas.lazy.tsx').then((d) => d.Route),
+  import('./routes/Mahasiswa/tugas.lazy.tsx').then((d) => d.Route),
 )
-const DashboardNilaiLazyRoute = DashboardNilaiLazyRouteImport.update({
-  id: '/dashboard/nilai',
-  path: '/dashboard/nilai',
+const MahasiswaNilaiLazyRoute = MahasiswaNilaiLazyRouteImport.update({
+  id: '/Mahasiswa/nilai',
+  path: '/Mahasiswa/nilai',
   getParentRoute: () => rootRouteImport,
 } as any).lazy(() =>
-  import('./routes/dashboard/nilai.lazy.tsx').then((d) => d.Route),
+  import('./routes/Mahasiswa/nilai.lazy.tsx').then((d) => d.Route),
 )
+const DosenGradingRoute = DosenGradingRouteImport.update({
+  id: '/dosen/grading',
+  path: '/dosen/grading',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DosenDashboardRoute = DosenDashboardRouteImport.update({
+  id: '/dosen/dashboard',
+  path: '/dosen/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DosenAssignmentRoute = DosenAssignmentRouteImport.update({
+  id: '/dosen/assignment',
+  path: '/dosen/assignment',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DosenAddAssignmentRoute = DosenAddAssignmentRouteImport.update({
+  id: '/dosen/add-assignment',
+  path: '/dosen/add-assignment',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MahasiswaRegisterRoute = MahasiswaRegisterRouteImport.update({
+  id: '/Mahasiswa/register',
+  path: '/Mahasiswa/register',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MahasiswaLoginRoute = MahasiswaLoginRouteImport.update({
+  id: '/Mahasiswa/login',
+  path: '/Mahasiswa/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MahasiswaDashboardRoute = MahasiswaDashboardRouteImport.update({
+  id: '/Mahasiswa/dashboard',
+  path: '/Mahasiswa/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+<<<<<<< HEAD
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+=======
+  '/mahasiswa': typeof MahasiswaRoute
+  '/role-selection': typeof RoleSelectionRoute
+>>>>>>> 09fade2 (selesai king)
   '/upload': typeof UploadRoute
-  '/dashboard/nilai': typeof DashboardNilaiLazyRoute
-  '/dashboard/tugas': typeof DashboardTugasLazyRoute
-  '/dashboard': typeof DashboardIndexRoute
+  '/Mahasiswa/dashboard': typeof MahasiswaDashboardRoute
+  '/Mahasiswa/login': typeof MahasiswaLoginRoute
+  '/Mahasiswa/register': typeof MahasiswaRegisterRoute
+  '/dosen/add-assignment': typeof DosenAddAssignmentRoute
+  '/dosen/assignment': typeof DosenAssignmentRoute
+  '/dosen/dashboard': typeof DosenDashboardRoute
+  '/dosen/grading': typeof DosenGradingRoute
+  '/Mahasiswa/nilai': typeof MahasiswaNilaiLazyRoute
+  '/Mahasiswa/tugas': typeof MahasiswaTugasLazyRoute
+  '/Mahasiswa': typeof MahasiswaIndexRoute
+  '/dosen': typeof DosenIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+<<<<<<< HEAD
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+=======
+  '/mahasiswa': typeof MahasiswaRoute
+  '/role-selection': typeof RoleSelectionRoute
+>>>>>>> 09fade2 (selesai king)
   '/upload': typeof UploadRoute
-  '/dashboard/nilai': typeof DashboardNilaiLazyRoute
-  '/dashboard/tugas': typeof DashboardTugasLazyRoute
-  '/dashboard': typeof DashboardIndexRoute
+  '/Mahasiswa/dashboard': typeof MahasiswaDashboardRoute
+  '/Mahasiswa/login': typeof MahasiswaLoginRoute
+  '/Mahasiswa/register': typeof MahasiswaRegisterRoute
+  '/dosen/add-assignment': typeof DosenAddAssignmentRoute
+  '/dosen/assignment': typeof DosenAssignmentRoute
+  '/dosen/dashboard': typeof DosenDashboardRoute
+  '/dosen/grading': typeof DosenGradingRoute
+  '/Mahasiswa/nilai': typeof MahasiswaNilaiLazyRoute
+  '/Mahasiswa/tugas': typeof MahasiswaTugasLazyRoute
+  '/Mahasiswa': typeof MahasiswaIndexRoute
+  '/dosen': typeof DosenIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+<<<<<<< HEAD
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+=======
+  '/mahasiswa': typeof MahasiswaRoute
+  '/role-selection': typeof RoleSelectionRoute
+>>>>>>> 09fade2 (selesai king)
   '/upload': typeof UploadRoute
-  '/dashboard/nilai': typeof DashboardNilaiLazyRoute
-  '/dashboard/tugas': typeof DashboardTugasLazyRoute
-  '/dashboard/': typeof DashboardIndexRoute
+  '/Mahasiswa/dashboard': typeof MahasiswaDashboardRoute
+  '/Mahasiswa/login': typeof MahasiswaLoginRoute
+  '/Mahasiswa/register': typeof MahasiswaRegisterRoute
+  '/dosen/add-assignment': typeof DosenAddAssignmentRoute
+  '/dosen/assignment': typeof DosenAssignmentRoute
+  '/dosen/dashboard': typeof DosenDashboardRoute
+  '/dosen/grading': typeof DosenGradingRoute
+  '/Mahasiswa/nilai': typeof MahasiswaNilaiLazyRoute
+  '/Mahasiswa/tugas': typeof MahasiswaTugasLazyRoute
+  '/Mahasiswa/': typeof MahasiswaIndexRoute
+  '/dosen/': typeof DosenIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+<<<<<<< HEAD
     | '/login'
     | '/register'
+=======
+    | '/mahasiswa'
+    | '/role-selection'
+>>>>>>> 09fade2 (selesai king)
     | '/upload'
-    | '/dashboard/nilai'
-    | '/dashboard/tugas'
-    | '/dashboard'
+    | '/Mahasiswa/dashboard'
+    | '/Mahasiswa/login'
+    | '/Mahasiswa/register'
+    | '/dosen/add-assignment'
+    | '/dosen/assignment'
+    | '/dosen/dashboard'
+    | '/dosen/grading'
+    | '/Mahasiswa/nilai'
+    | '/Mahasiswa/tugas'
+    | '/Mahasiswa'
+    | '/dosen'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+<<<<<<< HEAD
     | '/login'
     | '/register'
+=======
+    | '/mahasiswa'
+    | '/role-selection'
+>>>>>>> 09fade2 (selesai king)
     | '/upload'
-    | '/dashboard/nilai'
-    | '/dashboard/tugas'
-    | '/dashboard'
+    | '/Mahasiswa/dashboard'
+    | '/Mahasiswa/login'
+    | '/Mahasiswa/register'
+    | '/dosen/add-assignment'
+    | '/dosen/assignment'
+    | '/dosen/dashboard'
+    | '/dosen/grading'
+    | '/Mahasiswa/nilai'
+    | '/Mahasiswa/tugas'
+    | '/Mahasiswa'
+    | '/dosen'
   id:
     | '__root__'
     | '/'
+<<<<<<< HEAD
     | '/login'
     | '/register'
+=======
+    | '/mahasiswa'
+    | '/role-selection'
+>>>>>>> 09fade2 (selesai king)
     | '/upload'
-    | '/dashboard/nilai'
-    | '/dashboard/tugas'
-    | '/dashboard/'
+    | '/Mahasiswa/dashboard'
+    | '/Mahasiswa/login'
+    | '/Mahasiswa/register'
+    | '/dosen/add-assignment'
+    | '/dosen/assignment'
+    | '/dosen/dashboard'
+    | '/dosen/grading'
+    | '/Mahasiswa/nilai'
+    | '/Mahasiswa/tugas'
+    | '/Mahasiswa/'
+    | '/dosen/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+<<<<<<< HEAD
   LoginRoute: typeof LoginRoute
   RegisterRoute: typeof RegisterRoute
+=======
+  MahasiswaRoute: typeof MahasiswaRoute
+  RoleSelectionRoute: typeof RoleSelectionRoute
+>>>>>>> 09fade2 (selesai king)
   UploadRoute: typeof UploadRoute
-  DashboardNilaiLazyRoute: typeof DashboardNilaiLazyRoute
-  DashboardTugasLazyRoute: typeof DashboardTugasLazyRoute
-  DashboardIndexRoute: typeof DashboardIndexRoute
+  MahasiswaDashboardRoute: typeof MahasiswaDashboardRoute
+  MahasiswaLoginRoute: typeof MahasiswaLoginRoute
+  MahasiswaRegisterRoute: typeof MahasiswaRegisterRoute
+  DosenAddAssignmentRoute: typeof DosenAddAssignmentRoute
+  DosenAssignmentRoute: typeof DosenAssignmentRoute
+  DosenDashboardRoute: typeof DosenDashboardRoute
+  DosenGradingRoute: typeof DosenGradingRoute
+  MahasiswaNilaiLazyRoute: typeof MahasiswaNilaiLazyRoute
+  MahasiswaTugasLazyRoute: typeof MahasiswaTugasLazyRoute
+  MahasiswaIndexRoute: typeof MahasiswaIndexRoute
+  DosenIndexRoute: typeof DosenIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -137,6 +292,7 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof UploadRouteImport
       parentRoute: typeof rootRouteImport
     }
+<<<<<<< HEAD
     '/register': {
       id: '/register'
       path: '/register'
@@ -149,6 +305,20 @@ declare module '@tanstack/react-router' {
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof LoginRouteImport
+=======
+    '/role-selection': {
+      id: '/role-selection'
+      path: '/role-selection'
+      fullPath: '/role-selection'
+      preLoaderRoute: typeof RoleSelectionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mahasiswa': {
+      id: '/mahasiswa'
+      path: '/mahasiswa'
+      fullPath: '/mahasiswa'
+      preLoaderRoute: typeof MahasiswaRouteImport
+>>>>>>> 09fade2 (selesai king)
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -158,25 +328,81 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/dashboard/': {
-      id: '/dashboard/'
-      path: '/dashboard'
-      fullPath: '/dashboard'
-      preLoaderRoute: typeof DashboardIndexRouteImport
+    '/dosen/': {
+      id: '/dosen/'
+      path: '/dosen'
+      fullPath: '/dosen'
+      preLoaderRoute: typeof DosenIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/dashboard/tugas': {
-      id: '/dashboard/tugas'
-      path: '/dashboard/tugas'
-      fullPath: '/dashboard/tugas'
-      preLoaderRoute: typeof DashboardTugasLazyRouteImport
+    '/Mahasiswa/': {
+      id: '/Mahasiswa/'
+      path: '/Mahasiswa'
+      fullPath: '/Mahasiswa'
+      preLoaderRoute: typeof MahasiswaIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/dashboard/nilai': {
-      id: '/dashboard/nilai'
-      path: '/dashboard/nilai'
-      fullPath: '/dashboard/nilai'
-      preLoaderRoute: typeof DashboardNilaiLazyRouteImport
+    '/Mahasiswa/tugas': {
+      id: '/Mahasiswa/tugas'
+      path: '/Mahasiswa/tugas'
+      fullPath: '/Mahasiswa/tugas'
+      preLoaderRoute: typeof MahasiswaTugasLazyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/Mahasiswa/nilai': {
+      id: '/Mahasiswa/nilai'
+      path: '/Mahasiswa/nilai'
+      fullPath: '/Mahasiswa/nilai'
+      preLoaderRoute: typeof MahasiswaNilaiLazyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dosen/grading': {
+      id: '/dosen/grading'
+      path: '/dosen/grading'
+      fullPath: '/dosen/grading'
+      preLoaderRoute: typeof DosenGradingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dosen/dashboard': {
+      id: '/dosen/dashboard'
+      path: '/dosen/dashboard'
+      fullPath: '/dosen/dashboard'
+      preLoaderRoute: typeof DosenDashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dosen/assignment': {
+      id: '/dosen/assignment'
+      path: '/dosen/assignment'
+      fullPath: '/dosen/assignment'
+      preLoaderRoute: typeof DosenAssignmentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dosen/add-assignment': {
+      id: '/dosen/add-assignment'
+      path: '/dosen/add-assignment'
+      fullPath: '/dosen/add-assignment'
+      preLoaderRoute: typeof DosenAddAssignmentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/Mahasiswa/register': {
+      id: '/Mahasiswa/register'
+      path: '/Mahasiswa/register'
+      fullPath: '/Mahasiswa/register'
+      preLoaderRoute: typeof MahasiswaRegisterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/Mahasiswa/login': {
+      id: '/Mahasiswa/login'
+      path: '/Mahasiswa/login'
+      fullPath: '/Mahasiswa/login'
+      preLoaderRoute: typeof MahasiswaLoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/Mahasiswa/dashboard': {
+      id: '/Mahasiswa/dashboard'
+      path: '/Mahasiswa/dashboard'
+      fullPath: '/Mahasiswa/dashboard'
+      preLoaderRoute: typeof MahasiswaDashboardRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -184,12 +410,25 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+<<<<<<< HEAD
   LoginRoute: LoginRoute,
   RegisterRoute: RegisterRoute,
+=======
+  MahasiswaRoute: MahasiswaRoute,
+  RoleSelectionRoute: RoleSelectionRoute,
+>>>>>>> 09fade2 (selesai king)
   UploadRoute: UploadRoute,
-  DashboardNilaiLazyRoute: DashboardNilaiLazyRoute,
-  DashboardTugasLazyRoute: DashboardTugasLazyRoute,
-  DashboardIndexRoute: DashboardIndexRoute,
+  MahasiswaDashboardRoute: MahasiswaDashboardRoute,
+  MahasiswaLoginRoute: MahasiswaLoginRoute,
+  MahasiswaRegisterRoute: MahasiswaRegisterRoute,
+  DosenAddAssignmentRoute: DosenAddAssignmentRoute,
+  DosenAssignmentRoute: DosenAssignmentRoute,
+  DosenDashboardRoute: DosenDashboardRoute,
+  DosenGradingRoute: DosenGradingRoute,
+  MahasiswaNilaiLazyRoute: MahasiswaNilaiLazyRoute,
+  MahasiswaTugasLazyRoute: MahasiswaTugasLazyRoute,
+  MahasiswaIndexRoute: MahasiswaIndexRoute,
+  DosenIndexRoute: DosenIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
