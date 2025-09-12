@@ -10,33 +10,89 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as DosenGradingRouteImport } from './routes/dosen/grading'
+import { Route as DosenDashboardRouteImport } from './routes/dosen/dashboard'
+import { Route as DosenAssignmentRouteImport } from './routes/dosen/assignment'
+import { Route as DosenAddAssignmentRouteImport } from './routes/dosen/add-assignment'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DosenGradingRoute = DosenGradingRouteImport.update({
+  id: '/dosen/grading',
+  path: '/dosen/grading',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DosenDashboardRoute = DosenDashboardRouteImport.update({
+  id: '/dosen/dashboard',
+  path: '/dosen/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DosenAssignmentRoute = DosenAssignmentRouteImport.update({
+  id: '/dosen/assignment',
+  path: '/dosen/assignment',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DosenAddAssignmentRoute = DosenAddAssignmentRouteImport.update({
+  id: '/dosen/add-assignment',
+  path: '/dosen/add-assignment',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/dosen/add-assignment': typeof DosenAddAssignmentRoute
+  '/dosen/assignment': typeof DosenAssignmentRoute
+  '/dosen/dashboard': typeof DosenDashboardRoute
+  '/dosen/grading': typeof DosenGradingRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/dosen/add-assignment': typeof DosenAddAssignmentRoute
+  '/dosen/assignment': typeof DosenAssignmentRoute
+  '/dosen/dashboard': typeof DosenDashboardRoute
+  '/dosen/grading': typeof DosenGradingRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/dosen/add-assignment': typeof DosenAddAssignmentRoute
+  '/dosen/assignment': typeof DosenAssignmentRoute
+  '/dosen/dashboard': typeof DosenDashboardRoute
+  '/dosen/grading': typeof DosenGradingRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/dosen/add-assignment'
+    | '/dosen/assignment'
+    | '/dosen/dashboard'
+    | '/dosen/grading'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/dosen/add-assignment'
+    | '/dosen/assignment'
+    | '/dosen/dashboard'
+    | '/dosen/grading'
+  id:
+    | '__root__'
+    | '/'
+    | '/dosen/add-assignment'
+    | '/dosen/assignment'
+    | '/dosen/dashboard'
+    | '/dosen/grading'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  DosenAddAssignmentRoute: typeof DosenAddAssignmentRoute
+  DosenAssignmentRoute: typeof DosenAssignmentRoute
+  DosenDashboardRoute: typeof DosenDashboardRoute
+  DosenGradingRoute: typeof DosenGradingRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +104,43 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/dosen/grading': {
+      id: '/dosen/grading'
+      path: '/dosen/grading'
+      fullPath: '/dosen/grading'
+      preLoaderRoute: typeof DosenGradingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dosen/dashboard': {
+      id: '/dosen/dashboard'
+      path: '/dosen/dashboard'
+      fullPath: '/dosen/dashboard'
+      preLoaderRoute: typeof DosenDashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dosen/assignment': {
+      id: '/dosen/assignment'
+      path: '/dosen/assignment'
+      fullPath: '/dosen/assignment'
+      preLoaderRoute: typeof DosenAssignmentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dosen/add-assignment': {
+      id: '/dosen/add-assignment'
+      path: '/dosen/add-assignment'
+      fullPath: '/dosen/add-assignment'
+      preLoaderRoute: typeof DosenAddAssignmentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  DosenAddAssignmentRoute: DosenAddAssignmentRoute,
+  DosenAssignmentRoute: DosenAssignmentRoute,
+  DosenDashboardRoute: DosenDashboardRoute,
+  DosenGradingRoute: DosenGradingRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
