@@ -53,15 +53,6 @@ export const Route = createRootRoute({
                   <span>Daftar Tugas</span>
                 </Link>
 
-                <Link
-                  to="/dosen/grading"
-                  className="flex items-center px-4 py-3 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
-                  activeProps={{
-                    className: "bg-[#F72C5B] text-white hover:bg-[#F72C5B]",
-                  }}
-                >
-                  <span>Penilaian</span>
-                </Link>
               </nav>
             </div>
           </div>

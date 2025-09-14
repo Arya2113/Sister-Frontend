@@ -55,6 +55,52 @@ export type UserProfileResponse = {
     };
 };
 
+export type CreateAssignmentRequest = {
+    nama?: string;
+    deskripsi?: string;
+    deadline?: string;
+};
+
+export type CreateAssignmentResponse = {
+    message?: string;
+    data?: {
+        assignment?: {
+            id?: number;
+            createdAt?: string;
+            updatedAt?: string;
+            deletedAt?: unknown;
+            nama?: string;
+            deskripsi?: string;
+            deadline?: string;
+            creator?: {
+                id?: number;
+                name?: string;
+                email?: string;
+            };
+        };
+    };
+};
+
+export type GetAllAssignmentByNipResponse = {
+    message?: string;
+    data?: {
+        assignments?: Array<{
+            id?: number;
+            createdAt?: string;
+            updatedAt?: string;
+            deletedAt?: unknown;
+            nama?: string;
+            deskripsi?: string;
+            deadline?: string;
+            creator?: {
+                nip?: string;
+                nama?: string;
+                email?: string;
+            };
+        }>;
+    };
+};
+
 export type GetData = {
     body?: never;
     path?: never;
@@ -168,6 +214,64 @@ export type GetUserProfileResponses = {
 };
 
 export type GetUserProfileResponse = GetUserProfileResponses[keyof GetUserProfileResponses];
+
+export type PostCreateAssignmentData = {
+    body: CreateAssignmentRequest;
+    path?: never;
+    query?: never;
+    url: '/create/assignment';
+};
+
+export type PostCreateAssignmentErrors = {
+    /**
+     * Bad Request
+     */
+    400: unknown;
+    /**
+     * Internal Server Error
+     */
+    500: unknown;
+};
+
+export type PostCreateAssignmentResponses = {
+    /**
+     * Assignment created successfully.
+     */
+    200: CreateAssignmentResponse;
+    /**
+     * Created
+     */
+    201: unknown;
+};
+
+export type PostCreateAssignmentResponse = PostCreateAssignmentResponses[keyof PostCreateAssignmentResponses];
+
+export type GetAssignmentData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/assignment';
+};
+
+export type GetAssignmentErrors = {
+    /**
+     * Bad Request
+     */
+    400: unknown;
+    /**
+     * Internal Server Error
+     */
+    500: unknown;
+};
+
+export type GetAssignmentResponses = {
+    /**
+     * Assignment created successfully.
+     */
+    200: GetAllAssignmentByNipResponse;
+};
+
+export type GetAssignmentResponse = GetAssignmentResponses[keyof GetAssignmentResponses];
 
 export type ClientOptions = {
     baseUrl: 'http://localhost:3001/api/v1' | (string & {});
