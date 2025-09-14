@@ -49,13 +49,7 @@ const DosenAddAssignmentRoute = DosenAddAssignmentRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-<<<<<<< HEAD
   '/login': typeof LoginRoute
-}
-export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '/login': typeof LoginRoute
-=======
   '/dosen/add-assignment': typeof DosenAddAssignmentRoute
   '/dosen/assignment': typeof DosenAssignmentRoute
   '/dosen/dashboard': typeof DosenDashboardRoute
@@ -63,25 +57,16 @@ export interface FileRoutesByTo {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/login': typeof LoginRoute
   '/dosen/add-assignment': typeof DosenAddAssignmentRoute
   '/dosen/assignment': typeof DosenAssignmentRoute
   '/dosen/dashboard': typeof DosenDashboardRoute
   '/dosen/grading': typeof DosenGradingRoute
->>>>>>> arya
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-<<<<<<< HEAD
   '/login': typeof LoginRoute
-}
-export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/login'
-  fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/login'
-  id: '__root__' | '/' | '/login'
-=======
   '/dosen/add-assignment': typeof DosenAddAssignmentRoute
   '/dosen/assignment': typeof DosenAssignmentRoute
   '/dosen/dashboard': typeof DosenDashboardRoute
@@ -91,6 +76,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/login'
     | '/dosen/add-assignment'
     | '/dosen/assignment'
     | '/dosen/dashboard'
@@ -98,6 +84,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/login'
     | '/dosen/add-assignment'
     | '/dosen/assignment'
     | '/dosen/dashboard'
@@ -105,23 +92,20 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/login'
     | '/dosen/add-assignment'
     | '/dosen/assignment'
     | '/dosen/dashboard'
     | '/dosen/grading'
->>>>>>> arya
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-<<<<<<< HEAD
   LoginRoute: typeof LoginRoute
-=======
   DosenAddAssignmentRoute: typeof DosenAddAssignmentRoute
   DosenAssignmentRoute: typeof DosenAssignmentRoute
   DosenDashboardRoute: typeof DosenDashboardRoute
   DosenGradingRoute: typeof DosenGradingRoute
->>>>>>> arya
 }
 
 declare module '@tanstack/react-router' {
@@ -173,14 +157,11 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-<<<<<<< HEAD
   LoginRoute: LoginRoute,
-=======
   DosenAddAssignmentRoute: DosenAddAssignmentRoute,
   DosenAssignmentRoute: DosenAssignmentRoute,
   DosenDashboardRoute: DosenDashboardRoute,
   DosenGradingRoute: DosenGradingRoute,
->>>>>>> arya
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
