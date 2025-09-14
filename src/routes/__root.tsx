@@ -6,6 +6,14 @@ import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
 import appCss from '../styles.css?url'
 
 export const Route = createRootRoute({
+  head: () => ({
+    links: [
+      {
+        rel: 'stylesheet',
+        href: appCss,
+      },
+    ],
+  }),
   component: () => (
     <>
       <div className="min-h-screen bg-white font-sans">
@@ -61,10 +69,21 @@ export const Route = createRootRoute({
           {/* Main Content */}
           <div className="flex-1 p-8">
             <Outlet />
+            <TanstackDevtools
+              config={{
+                position: 'bottom-left',
+              }}
+              plugins={[
+                {
+                  name: 'Tanstack Router',
+                  render: <TanStackRouterDevtoolsPanel />,
+                },
+              ]}
+            />
           </div>
         </div>
       </div>
-      <TanStackRouterDevtools />
+            
     </>
   ),
 })
