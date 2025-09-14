@@ -7,4 +7,5 @@ count.txt
 .env
 .nitro
 .tanstack
-.env*
+.env.development
+src/routeTree.gen.ts
