@@ -1,28 +1,60 @@
 "use client"
 
-import type React from "react"
+import {
+  postCreateAssignmentMutation
+} from "@/client/@tanstack/react-query.gen";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { createFileRoute } from "@tanstack/react-router";
+import React, { useState } from "react";
 
-import { createFileRoute } from "@tanstack/react-router"
-import { useState } from "react"
 export const Route = createFileRoute("/dosen/add-assignment")({
   component: AddAssignment,
-})
+});
 
 function AddAssignment() {
-  const [title, setTitle] = useState("")
-  const [description, setDescription] = useState("")
-  const [deadline, setDeadline] = useState("")
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [deadline, setDeadline] = useState("");
+
+  const queryClient = useQueryClient();
+
+const mutation = useMutation(postCreateAssignmentMutation());
+
+  // const handleSubmit = (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   const isoDeadline = deadline ? new Date(deadline).toISOString() : undefined;
+
+  //   const token =
+  //     typeof window !== "undefined"
+  //       ? localStorage.getItem("accessToken") || localStorage.getItem("token")
+  //       : null;
+
+  //   mutation.mutate({
+  //     body: {
+  //       nama: title,
+  //       deskripsi: description,
+  //       deadline: isoDeadline,
+  //     },
+  //     headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+  //   });
+  // };
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    // Handle form submission here
-    console.log({ title, description, deadline })
-    // Reset form
-    setTitle("")
-    setDescription("")
-    setDeadline("")
-    alert("Tugas berhasil ditambahkan!")
-  }
+  e.preventDefault();
+
+  const isoDeadline = deadline ? new Date(deadline).toISOString() : undefined;
+
+  mutation.mutate({
+    body: {
+      nama: title,
+      deskripsi: description,
+      deadline: isoDeadline,
+    },
+    headers: {
+      Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInJvbGUiOiJkb3NlbiIsImlhdCI6MTc1Nzg2MDI5NiwiZXhwIjoxNzU3ODYxMTk2fQ.9hMNUU4WmN8mGf66GjD_fZV9ufmwUCmZQcEZ-pn4Usc",
+    },
+  });
+};
 
   return (
     <div className="space-y-6">
@@ -33,6 +65,7 @@ function AddAssignment() {
 
       <div className="bg-white rounded-lg border border-gray-200 p-6">
         <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Input judul */}
           <div>
             <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-2">
               Judul Tugas
@@ -48,6 +81,7 @@ function AddAssignment() {
             />
           </div>
 
+          {/* Input deskripsi */}
           <div>
             <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-2">
               Deskripsi
@@ -63,6 +97,7 @@ function AddAssignment() {
             />
           </div>
 
+          {/* Input deadline */}
           <div>
             <label htmlFor="deadline" className="block text-sm font-medium text-gray-700 mb-2">
               Deadline
@@ -77,27 +112,37 @@ function AddAssignment() {
             />
           </div>
 
+          {/* Tombol */}
           <div className="flex gap-4">
             <button
               type="submit"
-              className="px-6 py-3 bg-[#F72C5B] text-white rounded-lg hover:bg-[#FF748B] transition-colors font-medium"
+              disabled={mutation.isPending}
+              className="px-6 py-3 bg-[#F72C5B] text-white rounded-lg hover:bg-[#FF748B] transition-colors font-medium disabled:opacity-60"
             >
-              Simpan Tugas
+              {mutation.isPending ? "Menyimpan..." : "Simpan Tugas"}
             </button>
             <button
               type="button"
               onClick={() => {
-                setTitle("")
-                setDescription("")
-                setDeadline("")
+                setTitle("");
+                setDescription("");
+                setDeadline("");
               }}
               className="px-6 py-3 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors font-medium"
             >
               Reset
             </button>
           </div>
+
+          {mutation.isError && (
+            <div className="text-red-600 mt-2">
+              {String((mutation.error as any)?.message ?? "Terjadi kesalahan")}
+            </div>
+          )}
         </form>
       </div>
     </div>
-  )
+  );
 }
+
+export default AddAssignment;
