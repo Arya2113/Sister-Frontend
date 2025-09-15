@@ -1,16 +1,19 @@
-<<<<<<< HEAD
-import { createRootRoute, Link, Outlet } from "@tanstack/react-router"
-import { TanStackRouterDevtools } from "@tanstack/router-devtools"
-=======
 /// <reference types="vite/client" />
 
 import { TanstackDevtools } from '@tanstack/react-devtools'
-import { Outlet, createRootRoute } from '@tanstack/react-router'
+import { Outlet, Link , createRootRoute } from '@tanstack/react-router'
 import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
 import appCss from '../styles.css?url'
->>>>>>> example
 
 export const Route = createRootRoute({
+  head: () => ({
+    links: [
+      {
+        rel: 'stylesheet',
+        href: appCss,
+      },
+    ],
+  }),
   component: () => (
     <>
       <div className="min-h-screen bg-white font-sans">
@@ -50,15 +53,6 @@ export const Route = createRootRoute({
                   <span>Daftar Tugas</span>
                 </Link>
 
-                <Link
-                  to="/dosen/grading"
-                  className="flex items-center px-4 py-3 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
-                  activeProps={{
-                    className: "bg-[#F72C5B] text-white hover:bg-[#F72C5B]",
-                  }}
-                >
-                  <span>Penilaian</span>
-                </Link>
               </nav>
             </div>
           </div>
@@ -66,10 +60,20 @@ export const Route = createRootRoute({
           {/* Main Content */}
           <div className="flex-1 p-8">
             <Outlet />
+            <TanstackDevtools
+              config={{
+                position: 'bottom-left',
+              }}
+              plugins={[
+                {
+                  name: 'Tanstack Router',
+                  render: <TanStackRouterDevtoolsPanel />,
+                },
+              ]}
+            />
           </div>
         </div>
-      </div>
-      <TanStackRouterDevtools />
+      </div>       
     </>
   ),
 })
