@@ -20,7 +20,7 @@ type Assignment = {
 
 function DosenDashboard() {
   const token =
-    "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInJvbGUiOiJkb3NlbiIsImlhdCI6MTc1Nzg2MTMwNSwiZXhwIjoxNzU3ODYyMjA1fQ.RnjazTroYtoM0NcSDuBNXSemh7xp9PnJmKhsGjb_dsU";
+    "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInJvbGUiOiJkb3NlbiIsImlhdCI6MTc1Nzg2MzkzMCwiZXhwIjoxNzU3ODY0ODMwfQ.r3KCHd7-QW3MI12R7xahtEQpM5Rrmn03r3AQ_tE28s0";
 
   const queryClient = useQueryClient();
 

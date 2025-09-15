@@ -2,45 +2,33 @@
 
 import { createFileRoute } from "@tanstack/react-router"
 import { useState } from "react"
+import { useQuery } from "@tanstack/react-query"
+import { getAssignmentOptions } from "../../client/@tanstack/react-query.gen"
 
 export const Route = createFileRoute("/dosen/assignment")({
   component: AssignmentsList,
 })
 
-// Mock data for assignments
-const mockAssignments = [
-  {
-    id: 1,
-    title: "Algoritma Pemrograman - Sorting",
-    description: "Implementasi algoritma sorting (bubble sort, quick sort, merge sort)",
-    deadline: "2024-01-15T23:59",
-    submissions: 15,
-    totalStudents: 20,
-    status: "active",
-  },
-  {
-    id: 2,
-    title: "Struktur Data - Linked List",
-    description: "Membuat implementasi linked list dengan operasi insert, delete, dan search",
-    deadline: "2024-01-20T23:59",
-    submissions: 8,
-    totalStudents: 20,
-    status: "active",
-  },
-  {
-    id: 3,
-    title: "Database - ERD Design",
-    description: "Merancang Entity Relationship Diagram untuk sistem perpustakaan",
-    deadline: "2024-01-10T23:59",
-    submissions: 20,
-    totalStudents: 20,
-    status: "closed",
-  },
-]
-
 function AssignmentsList() {
-  const [assignments] = useState(mockAssignments)
   const [filter, setFilter] = useState("all")
+
+  const fallbackJwt =
+    "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInJvbGUiOiJkb3NlbiIsImlhdCI6MTc1Nzg2OTgwOCwiZXhwIjoxNzU3ODcwNzA4fQ.Q_XOTS4W-vaj-vcu9kI6LtAJ_q75xAq1YJK1YEyf0XQ"
+
+  const localToken =
+    typeof window !== "undefined" ? localStorage.getItem("accessToken") : null
+
+  const token = localToken || fallbackJwt
+
+  const assignmentsQuery = useQuery(
+    getAssignmentOptions({
+      headers: token ? { Authorization: Bearer ${token} } : undefined,
+    }),
+  )
+
+  const assignments: any[] = Array.isArray(assignmentsQuery.data)
+    ? assignmentsQuery.data
+    : []
 
   const filteredAssignments = assignments.filter((assignment) => {
     if (filter === "all") return true
@@ -68,8 +56,14 @@ function AssignmentsList() {
   return (
     <div className="space-y-6">
       <div className="border-b border-gray-200 pb-4">
-        <h1 className="text-3xl font-bold text-gray-900">Daftar Tugas</h1>
-        <p className="text-gray-600 mt-2">Kelola dan pantau tugas yang telah dikumpulkan mahasiswa</p>
+        <div className="flex items-start justify-between">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900">Daftar Tugas</h1>
+            <p className="text-gray-600 mt-2">
+              Kelola dan pantau tugas yang telah dikumpulkan mahasiswa
+            </p>
+          </div>
+        </div>
       </div>
 
       {/* Filter Tabs */}
@@ -77,7 +71,9 @@ function AssignmentsList() {
         <button
           onClick={() => setFilter("all")}
           className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-            filter === "all" ? "bg-white text-[#F72C5B] shadow-sm" : "text-gray-600 hover:text-gray-900"
+            filter === "all"
+              ? "bg-white text-[#F72C5B] shadow-sm"
+              : "text-gray-600 hover:text-gray-900"
           }`}
         >
           Semua
@@ -85,7 +81,9 @@ function AssignmentsList() {
         <button
           onClick={() => setFilter("active")}
           className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-            filter === "active" ? "bg-white text-[#F72C5B] shadow-sm" : "text-gray-600 hover:text-gray-900"
+            filter === "active"
+              ? "bg-white text-[#F72C5B] shadow-sm"
+              : "text-gray-600 hover:text-gray-900"
           }`}
         >
           Aktif
@@ -93,7 +91,9 @@ function AssignmentsList() {
         <button
           onClick={() => setFilter("closed")}
           className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-            filter === "closed" ? "bg-white text-[#F72C5B] shadow-sm" : "text-gray-600 hover:text-gray-900"
+            filter === "closed"
+              ? "bg-white text-[#F72C5B] shadow-sm"
+              : "text-gray-600 hover:text-gray-900"
           }`}
         >
           Selesai
@@ -110,21 +110,32 @@ function AssignmentsList() {
             <div className="flex items-start justify-between mb-4">
               <div className="flex-1">
                 <div className="flex items-center gap-3 mb-2">
-                  <h3 className="text-xl font-semibold text-gray-900">{assignment.title}</h3>
-                  <span className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(assignment.status)}`}>
+                  <h3 className="text-xl font-semibold text-gray-900">
+                    {assignment.nama}
+                  </h3>
+                  <span
+                    className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(
+                      assignment.status,
+                    )}`}
+                  >
                     {assignment.status === "active" ? "Aktif" : "Selesai"}
                   </span>
                 </div>
-                <p className="text-gray-600 mb-3">{assignment.description}</p>
+                <p className="text-gray-600 mb-3">{assignment.deskripsi}</p>
                 <p className="text-sm text-gray-500">
                   Deadline:{" "}
-                  {new Date(assignment.deadline).toLocaleDateString("id-ID", {
-                    day: "numeric",
-                    month: "long",
-                    year: "numeric",
-                    hour: "2-digit",
-                    minute: "2-digit",
-                  })}
+                  {assignment.deadline
+                    ? new Date(assignment.deadline).toLocaleDateString(
+                        "id-ID",
+                        {
+                          day: "numeric",
+                          month: "long",
+                          year: "numeric",
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        },
+                      )
+                    : "-"}
                 </p>
               </div>
             </div>
@@ -134,16 +145,23 @@ function AssignmentsList() {
               <div className="flex justify-between text-sm text-gray-600 mb-2">
                 <span>Pengumpulan</span>
                 <span>
-                  {assignment.submissions}/{assignment.totalStudents} mahasiswa
+                  {assignment.submissions ?? 0}/{assignment.totalStudents ?? 0}{" "}
+                  mahasiswa
                 </span>
               </div>
               <div className="w-full bg-gray-200 rounded-full h-2">
                 <div
                   className={`h-2 rounded-full transition-all ${getProgressColor(
-                    assignment.submissions,
-                    assignment.totalStudents,
+                    assignment.submissions ?? 0,
+                    assignment.totalStudents ?? 0,
                   )}`}
-                  style={{ width: `${(assignment.submissions / assignment.totalStudents) * 100}%` }}
+                  style={{
+                    width: `${
+                      ((assignment.submissions ?? 0) /
+                        (assignment.totalStudents || 1)) *
+                      100
+                    }%`,
+                  }}
                 />
               </div>
             </div>
@@ -169,7 +187,12 @@ function AssignmentsList() {
       {filteredAssignments.length === 0 && (
         <div className="text-center py-12">
           <div className="text-gray-400 mb-4">
-            <svg className="mx-auto h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg
+              className="mx-auto h-12 w-12"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -178,10 +201,16 @@ function AssignmentsList() {
               />
             </svg>
           </div>
-          <h3 className="text-lg font-medium text-gray-900 mb-2">Tidak ada tugas</h3>
-          <p className="text-gray-600">Belum ada tugas yang sesuai dengan filter yang dipilih.</p>
+          <h3 className="text-lg font-medium text-gray-900 mb-2">
+            Tidak ada tugas
+          </h3>
+          <p className="text-gray-600">
+            Belum ada tugas yang sesuai dengan filter yang dipilih.
+          </p>
         </div>
       )}
     </div>
   )
 }
+
+export default AssignmentsList

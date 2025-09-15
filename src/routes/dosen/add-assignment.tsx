@@ -4,7 +4,7 @@ import {
   postCreateAssignmentMutation
 } from "@/client/@tanstack/react-query.gen";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import React, { useState } from "react";
 
 export const Route = createFileRoute("/dosen/add-assignment")({
@@ -15,11 +15,20 @@ function AddAssignment() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [deadline, setDeadline] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+  const navigate = useNavigate();
 
   const queryClient = useQueryClient();
 
-const mutation = useMutation(postCreateAssignmentMutation());
-
+  const mutation = useMutation({
+    ...postCreateAssignmentMutation(),
+    onSuccess: () => {
+      setSuccessMessage("Tugas berhasil dibuat!");
+      setTimeout(() => {
+        navigate({ to: "/dosen/dashboard" });
+      }, 1000);
+    },
+  });
   // const handleSubmit = (e: React.FormEvent) => {
   //   e.preventDefault();
   //   const isoDeadline = deadline ? new Date(deadline).toISOString() : undefined;
@@ -51,7 +60,7 @@ const mutation = useMutation(postCreateAssignmentMutation());
       deadline: isoDeadline,
     },
     headers: {
-      Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInJvbGUiOiJkb3NlbiIsImlhdCI6MTc1Nzg2MDI5NiwiZXhwIjoxNzU3ODYxMTk2fQ.9hMNUU4WmN8mGf66GjD_fZV9ufmwUCmZQcEZ-pn4Usc",
+      Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInJvbGUiOiJkb3NlbiIsImlhdCI6MTc1Nzg2MzkzMCwiZXhwIjoxNzU3ODY0ODMwfQ.r3KCHd7-QW3MI12R7xahtEQpM5Rrmn03r3AQ_tE28s0",
     },
   });
 };
@@ -63,6 +72,11 @@ const mutation = useMutation(postCreateAssignmentMutation());
         <p className="text-gray-600 mt-2">Buat tugas baru untuk mahasiswa</p>
       </div>
 
+      {successMessage && (
+        <div className="p-4 rounded-lg bg-green-100 text-green-700 border border-green-300">
+          {successMessage}
+        </div>
+      )}
       <div className="bg-white rounded-lg border border-gray-200 p-6">
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Input judul */}
