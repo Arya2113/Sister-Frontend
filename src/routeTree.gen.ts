@@ -8,12 +8,25 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
+<<<<<<< HEAD
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as UploadRouteImport } from './routes/upload'
 import { Route as RoleSelectionRouteImport } from './routes/role-selection'
 import { Route as RegisterRouteImport } from './routes/register'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as IndexRouteImport } from './routes/index'
+=======
+import { createFileRoute } from '@tanstack/react-router'
+
+import { Route as rootRouteImport } from './routes/__root.tsx'
+import { Route as UploadRouteImport } from './routes/upload.tsx'
+import { Route as LoginRouteImport } from './routes/login.tsx'
+import { Route as IndexRouteImport } from './routes/index.tsx'
+import { Route as DashboardIndexRouteImport } from './routes/dashboard/index.tsx'
+
+const DashboardTugasLazyRouteImport = createFileRoute('/dashboard/tugas')()
+const DashboardNilaiLazyRouteImport = createFileRoute('/dashboard/nilai')()
+>>>>>>> mahasiswa
 
 const UploadRoute = UploadRouteImport.update({
   id: '/upload',
@@ -40,6 +53,25 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DashboardIndexRoute = DashboardIndexRouteImport.update({
+  id: '/dashboard/',
+  path: '/dashboard/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardTugasLazyRoute = DashboardTugasLazyRouteImport.update({
+  id: '/dashboard/tugas',
+  path: '/dashboard/tugas',
+  getParentRoute: () => rootRouteImport,
+} as any).lazy(() =>
+  import('./routes/dashboard/tugas.lazy.tsx').then((d) => d.Route),
+)
+const DashboardNilaiLazyRoute = DashboardNilaiLazyRouteImport.update({
+  id: '/dashboard/nilai',
+  path: '/dashboard/nilai',
+  getParentRoute: () => rootRouteImport,
+} as any).lazy(() =>
+  import('./routes/dashboard/nilai.lazy.tsx').then((d) => d.Route),
+)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -47,6 +79,9 @@ export interface FileRoutesByFullPath {
   '/register': typeof RegisterRoute
   '/role-selection': typeof RoleSelectionRoute
   '/upload': typeof UploadRoute
+  '/dashboard/nilai': typeof DashboardNilaiLazyRoute
+  '/dashboard/tugas': typeof DashboardTugasLazyRoute
+  '/dashboard': typeof DashboardIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -54,6 +89,9 @@ export interface FileRoutesByTo {
   '/register': typeof RegisterRoute
   '/role-selection': typeof RoleSelectionRoute
   '/upload': typeof UploadRoute
+  '/dashboard/nilai': typeof DashboardNilaiLazyRoute
+  '/dashboard/tugas': typeof DashboardTugasLazyRoute
+  '/dashboard': typeof DashboardIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -62,13 +100,42 @@ export interface FileRoutesById {
   '/register': typeof RegisterRoute
   '/role-selection': typeof RoleSelectionRoute
   '/upload': typeof UploadRoute
+  '/dashboard/nilai': typeof DashboardNilaiLazyRoute
+  '/dashboard/tugas': typeof DashboardTugasLazyRoute
+  '/dashboard/': typeof DashboardIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
+<<<<<<< HEAD
   fullPaths: '/' | '/login' | '/register' | '/role-selection' | '/upload'
   fileRoutesByTo: FileRoutesByTo
   to: '/' | '/login' | '/register' | '/role-selection' | '/upload'
   id: '__root__' | '/' | '/login' | '/register' | '/role-selection' | '/upload'
+=======
+  fullPaths:
+    | '/'
+    | '/login'
+    | '/upload'
+    | '/dashboard/nilai'
+    | '/dashboard/tugas'
+    | '/dashboard'
+  fileRoutesByTo: FileRoutesByTo
+  to:
+    | '/'
+    | '/login'
+    | '/upload'
+    | '/dashboard/nilai'
+    | '/dashboard/tugas'
+    | '/dashboard'
+  id:
+    | '__root__'
+    | '/'
+    | '/login'
+    | '/upload'
+    | '/dashboard/nilai'
+    | '/dashboard/tugas'
+    | '/dashboard/'
+>>>>>>> mahasiswa
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -77,6 +144,9 @@ export interface RootRouteChildren {
   RegisterRoute: typeof RegisterRoute
   RoleSelectionRoute: typeof RoleSelectionRoute
   UploadRoute: typeof UploadRoute
+  DashboardNilaiLazyRoute: typeof DashboardNilaiLazyRoute
+  DashboardTugasLazyRoute: typeof DashboardTugasLazyRoute
+  DashboardIndexRoute: typeof DashboardIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -116,6 +186,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/dashboard/': {
+      id: '/dashboard/'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof DashboardIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard/tugas': {
+      id: '/dashboard/tugas'
+      path: '/dashboard/tugas'
+      fullPath: '/dashboard/tugas'
+      preLoaderRoute: typeof DashboardTugasLazyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard/nilai': {
+      id: '/dashboard/nilai'
+      path: '/dashboard/nilai'
+      fullPath: '/dashboard/nilai'
+      preLoaderRoute: typeof DashboardNilaiLazyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -125,6 +216,9 @@ const rootRouteChildren: RootRouteChildren = {
   RegisterRoute: RegisterRoute,
   RoleSelectionRoute: RoleSelectionRoute,
   UploadRoute: UploadRoute,
+  DashboardNilaiLazyRoute: DashboardNilaiLazyRoute,
+  DashboardTugasLazyRoute: DashboardTugasLazyRoute,
+  DashboardIndexRoute: DashboardIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
