@@ -24,6 +24,7 @@
   },
   "devDependencies": {
     "@hey-api/openapi-ts": "0.82.5",
+    "@tanstack/router-cli": "^1.131.44",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/react": "^16.2.0",
     "@types/node": "^24.3.0",
