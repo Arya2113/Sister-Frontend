@@ -2,12 +2,14 @@
 
 import type React from "react"
 import { useState } from "react"
-import { Link } from "@tanstack/react-router"
+import { Link, useNavigate } from "@tanstack/react-router"
+import { authStore } from "../utils/authStore"
 import { Button } from "./ui/button"
 import { Input } from "./ui/input"
 import { Select } from "./ui/select"
 
 export function LoginForm() {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -54,32 +56,37 @@ export function LoginForm() {
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-
-    if (!validateForm()) return
-
-    setIsLoading(true)
-
+    e.preventDefault();
+    if (!validateForm()) return;
+    setIsLoading(true);
     try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000))
-
-      // Here you would typically make an API call to authenticate
-      console.log("Login attempt:", formData)
-
-      // Redirect based on role
-      if (formData.role === "dosen") {
-        // Navigate to dosen dashboard
-        console.log("Redirecting to dosen dashboard")
+      const res = await fetch("http://localhost:3001/api/v1/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: formData.email,
+          password: formData.password,
+          role: formData.role,
+        }),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        // ✨ INI LANGKAH SELANJUTNYA SESUAI CHAT ✨
+        if (data.accessToken && data.refreshToken) {
+          authStore.store("accessToken", data.accessToken);
+          authStore.store("refreshToken", data.refreshToken);
+          console.log("Token berhasil disimpan ke localStorage!");
+          navigate({ to: "/dashboard" }); // atau "/tugas" jika sudah tersedia
+        } else {
+          setErrors({ general: "Login berhasil, tetapi data token tidak diterima." });
+        }
       } else {
-        // Navigate to mahasiswa dashboard
-        console.log("Redirecting to mahasiswa dashboard")
+        setErrors({ general: data.message || "Login gagal. Silakan coba lagi." });
       }
     } catch (error) {
-      console.error("Login error:", error)
-      setErrors({ general: "Login gagal. Silakan coba lagi." })
+      setErrors({ general: "Login gagal. Silakan coba lagi." });
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
   }
 
