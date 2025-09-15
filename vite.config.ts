@@ -1,5 +1,8 @@
 import tailwindcss from '@tailwindcss/vite'
-import tanstackRouter from '@tanstack/router-plugin/vite'
+import tanstackRouter, {
+  tanstackRouterGenerator,
+  TanStackRouterVite,
+} from '@tanstack/router-plugin/vite'
 import viteReact from '@vitejs/plugin-react'
 import { resolve } from 'node:path'
 import { defineConfig } from 'vite'
@@ -15,6 +18,11 @@ export default defineConfig({
     //   autoCodeSplitting: true,
     // }),
     viteReact(),
+    tanstackRouterGenerator({
+      addExtensions: true,
+      routesDirectory: './src/routes',
+      generatedRouteTree: './src/routeTree.gen.ts',
+    }),
     tailwindcss(),
   ],
   // test: {
