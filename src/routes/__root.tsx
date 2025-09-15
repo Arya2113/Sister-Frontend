@@ -1,5 +1,14 @@
+<<<<<<< HEAD
 import { createRootRoute, Link, Outlet } from "@tanstack/react-router"
 import { TanStackRouterDevtools } from "@tanstack/router-devtools"
+=======
+/// <reference types="vite/client" />
+
+import { TanstackDevtools } from '@tanstack/react-devtools'
+import { Outlet, createRootRoute } from '@tanstack/react-router'
+import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
+import appCss from '../styles.css?url'
+>>>>>>> example
 
 export const Route = createRootRoute({
   component: () => (
