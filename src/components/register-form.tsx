@@ -2,12 +2,13 @@
 
 import type React from "react"
 import { useState } from "react"
-import { Link } from "@tanstack/react-router"
+import { Link, useNavigate } from "@tanstack/react-router"
 import { Button } from "./ui/button"
 import { Input } from "./ui/input"
 import { Select } from "./ui/select"
 
 export function RegisterForm() {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -77,26 +78,33 @@ export function RegisterForm() {
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-
-    if (!validateForm()) return
-
-    setIsLoading(true)
-
+    e.preventDefault();
+    if (!validateForm()) return;
+    setIsLoading(true);
     try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1500))
-
-      // Here you would typically make an API call to register
-      console.log("Registration attempt:", formData)
-
-      // Show success message or redirect
-      alert("Registrasi berhasil! Silakan login.")
+      const res = await fetch("http://localhost:3001/api/v1/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          fullName: formData.fullName,
+          email: formData.email,
+          password: formData.password,
+          role: formData.role,
+          studentId: formData.studentId,
+          lecturerId: formData.lecturerId,
+        }),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        // Registrasi berhasil, redirect ke login
+  navigate({ to: "/login" });
+      } else {
+        setErrors({ general: data.message || "Registrasi gagal. Silakan coba lagi." });
+      }
     } catch (error) {
-      console.error("Registration error:", error)
-      setErrors({ general: "Registrasi gagal. Silakan coba lagi." })
+      setErrors({ general: "Registrasi gagal. Silakan coba lagi." });
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
   }
 
