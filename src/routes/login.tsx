@@ -1,22 +1,73 @@
-import { createFileRoute } from "@tanstack/react-router"
-import { LoginForm } from "../components/login-form"
+import {
+  getUserProfileOptions,
+  postLoginMutation,
+} from '@/client/@tanstack/react-query.gen'
+import { useMutation, useQuery } from '@tanstack/react-query'
+import { createFileRoute } from '@tanstack/react-router'
+import React from 'react'
 
-export const Route = createFileRoute("/login")({
-  component: Login,
+export const Route = createFileRoute('/login')({
+  component: RouteComponent,
 })
 
-function Login() {
+function RouteComponent() {
+  const [getProfile, setGetProfile] = React.useState(false)
+  const [accessToken, setAccessToken] = React.useState('')
+
+  console.log('Access Token:', accessToken)
+
+  const loginMutation = useMutation({
+    ...postLoginMutation(),
+    onSuccess: (data) => {
+      console.log('Login successful:', data)
+      setAccessToken(data.tokens?.accessToken ?? '')
+    },
+  })
+
+  const handleLogin = () => {
+    loginMutation.mutate({
+      body: {
+        email: 'rakaaleandra@gmail.com',
+        password: 'secretpassword',
+      },
+    })
+  }
+
+  const getUserProfile = useQuery({
+    ...getUserProfileOptions({
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    }),
+    enabled: getProfile,
+  })
+
+  if (!getUserProfile.isLoading && getUserProfile.data) {
+    console.log('User Profile:', getUserProfile.data)
+  }
+
+  const handleGetProfile = () => {
+    setGetProfile(!getProfile)
+  }
   return (
-    <div className="flex items-center justify-center min-h-[calc(100vh-80px)] p-4">
-      <div className="w-full max-w-md">
-        <div className="bg-card rounded-lg shadow-lg p-8 border border-border">
-          <div className="text-center mb-8">
-            <h1 className="text-2xl font-bold text-card-foreground mb-2">Login</h1>
-            <p className="text-muted-foreground">Masuk ke Portal Tugas Akademik</p>
-          </div>
-          <LoginForm />
+    <>
+      <div className='w-full h-screen flex items-center justify-center bg-white/20'>
+        <div className='w-1/4 h-[10rem] bg-yellow-300/40 rounded-lg flex flex-col items-center justify-center'>
+          <h1 className='text-2xl font-bold'>Login Page</h1>
+          <button
+            onClick={handleLogin}
+            className='mt-4 px-4 py-2 bg-blue-500 text-white rounded font-bold cursor-pointer'
+          >
+            Login
+          </button>
+          <button
+            onClick={handleGetProfile}
+            className='mt-4 px-4 py-2 bg-red-500 text-white rounded font-bold cursor-pointer'
+          >
+            Get Profile
+          </button>
         </div>
       </div>
-    </div>
+    </>
   )
 }
