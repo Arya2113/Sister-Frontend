@@ -1,12 +1,19 @@
 /// <reference types="vite/client" />
 
-import { TanstackDevtools } from '@tanstack/react-devtools'
+import { Outlet,Link, createRootRoute } from '@tanstack/react-router'
 import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
+import { TanstackDevtools } from '@tanstack/react-devtools'
 import appCss from '../styles.css?url'
-import { createRootRoute, Link, Outlet } from "@tanstack/react-router"
-import { TanStackRouterDevtools } from "@tanstack/react-router-devtools"
 
 export const Route = createRootRoute({
+  head: () => ({
+    links: [
+      {
+        rel: 'stylesheet',
+        href: appCss,
+      },
+    ],
+  }),
   component: () => (
     <>
       <div className="min-h-screen bg-background">
@@ -36,8 +43,19 @@ export const Route = createRootRoute({
           </div>
         </nav>
         <Outlet />
+                   <TanstackDevtools
+              config={{
+                position: 'bottom-left',
+              }}
+              plugins={[
+                {
+                  name: 'Tanstack Router',
+                  render: <TanStackRouterDevtoolsPanel />,
+                },
+              ]}
+            />
+
       </div>
-      <TanStackRouterDevtools />
     </>
   ),
 })

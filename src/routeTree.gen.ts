@@ -8,25 +8,18 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-<<<<<<< HEAD
-import { Route as rootRouteImport } from './routes/__root'
-import { Route as UploadRouteImport } from './routes/upload'
-import { Route as RoleSelectionRouteImport } from './routes/role-selection'
-import { Route as RegisterRouteImport } from './routes/register'
-import { Route as LoginRouteImport } from './routes/login'
-import { Route as IndexRouteImport } from './routes/index'
-=======
 import { createFileRoute } from '@tanstack/react-router'
 
 import { Route as rootRouteImport } from './routes/__root.tsx'
 import { Route as UploadRouteImport } from './routes/upload.tsx'
+import { Route as RoleSelectionRouteImport } from './routes/role-selection.tsx'
+import { Route as RegisterRouteImport } from './routes/register.tsx'
 import { Route as LoginRouteImport } from './routes/login.tsx'
 import { Route as IndexRouteImport } from './routes/index.tsx'
 import { Route as DashboardIndexRouteImport } from './routes/dashboard/index.tsx'
 
 const DashboardTugasLazyRouteImport = createFileRoute('/dashboard/tugas')()
 const DashboardNilaiLazyRouteImport = createFileRoute('/dashboard/nilai')()
->>>>>>> mahasiswa
 
 const UploadRoute = UploadRouteImport.update({
   id: '/upload',
@@ -106,15 +99,11 @@ export interface FileRoutesById {
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-<<<<<<< HEAD
-  fullPaths: '/' | '/login' | '/register' | '/role-selection' | '/upload'
-  fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/login' | '/register' | '/role-selection' | '/upload'
-  id: '__root__' | '/' | '/login' | '/register' | '/role-selection' | '/upload'
-=======
   fullPaths:
     | '/'
     | '/login'
+    | '/register'
+    | '/role-selection'
     | '/upload'
     | '/dashboard/nilai'
     | '/dashboard/tugas'
@@ -123,6 +112,8 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/login'
+    | '/register'
+    | '/role-selection'
     | '/upload'
     | '/dashboard/nilai'
     | '/dashboard/tugas'
@@ -131,11 +122,12 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/login'
+    | '/register'
+    | '/role-selection'
     | '/upload'
     | '/dashboard/nilai'
     | '/dashboard/tugas'
     | '/dashboard/'
->>>>>>> mahasiswa
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {

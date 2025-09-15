@@ -1,32 +1,40 @@
-"use client"
-
-import type React from "react"
 import { useState } from "react"
 import { Link, useNavigate } from "@tanstack/react-router"
 import { authStore } from "../utils/authStore"
-import { Button } from "./ui/button"
-import { Input } from "./ui/input"
-import { Select } from "./ui/select"
+import {
+  postLoginMutation,
+} from "@/client/@tanstack/react-query.gen"
+import { useMutation } from "@tanstack/react-query"
 
 export function LoginForm() {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
   const [formData, setFormData] = useState({
     email: "",
     password: "",
-    role: "mahasiswa",
   })
   const [errors, setErrors] = useState<Record<string, string>>({})
-  const [isLoading, setIsLoading] = useState(false)
 
-  const roleOptions = [
-    { value: "mahasiswa", label: "Mahasiswa" },
-    { value: "dosen", label: "Dosen" },
-  ]
+  // gunakan mutation dari hey-api / tanstack
+  const loginMutation = useMutation({
+    ...postLoginMutation(),
+    onSuccess: (data) => {
+      if (data.tokens?.accessToken && data.tokens?.refreshToken) {
+        authStore.store("accessToken", data.tokens.accessToken)
+        authStore.store("refreshToken", data.tokens.refreshToken)
+        navigate({ to: "/dashboard" })
+      }
+    },
+    onError: (err: any) => {
+      setErrors({
+        general:
+          err?.message || "Login gagal. Periksa email dan password Anda.",
+      })
+    },
+  })
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
     setFormData((prev) => ({ ...prev, [name]: value }))
-    // Clear error when user starts typing
     if (errors[name]) {
       setErrors((prev) => ({ ...prev, [name]: "" }))
     }
@@ -34,114 +42,97 @@ export function LoginForm() {
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {}
-
     if (!formData.email) {
       newErrors.email = "Email harus diisi"
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
       newErrors.email = "Format email tidak valid"
     }
-
     if (!formData.password) {
       newErrors.password = "Password harus diisi"
-    } else if (formData.password.length < 6) {
-      newErrors.password = "Password minimal 6 karakter"
     }
-
-    if (!formData.role) {
-      newErrors.role = "Role harus dipilih"
-    }
-
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
   }
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!validateForm()) return;
-    setIsLoading(true);
-    try {
-      const res = await fetch("http://localhost:3001/api/v1/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email: formData.email,
-          password: formData.password,
-          role: formData.role,
-        }),
-      });
-      const data = await res.json();
-      if (res.ok) {
-        // ✨ INI LANGKAH SELANJUTNYA SESUAI CHAT ✨
-        if (data.accessToken && data.refreshToken) {
-          authStore.store("accessToken", data.accessToken);
-          authStore.store("refreshToken", data.refreshToken);
-          console.log("Token berhasil disimpan ke localStorage!");
-          navigate({ to: "/dashboard" }); // atau "/tugas" jika sudah tersedia
-        } else {
-          setErrors({ general: "Login berhasil, tetapi data token tidak diterima." });
-        }
-      } else {
-        setErrors({ general: data.message || "Login gagal. Silakan coba lagi." });
-      }
-    } catch (error) {
-      setErrors({ general: "Login gagal. Silakan coba lagi." });
-    } finally {
-      setIsLoading(false);
-    }
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!validateForm()) return
+
+    loginMutation.mutate({
+      body: {
+        email: formData.email,
+        password: formData.password,
+      },
+    })
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
-      {errors.general && (
-        <div className="bg-destructive/10 border border-destructive/20 text-destructive px-4 py-3 rounded-lg">
-          {errors.general}
-        </div>
-      )}
+    <div className="flex items-center justify-center min-h-screen bg-gray-50">
+      <div className="bg-white p-8 rounded-2xl shadow-lg w-full max-w-sm text-center">
+        <h1 className="text-2xl font-bold text-pink-600 mb-2">Login</h1>
+        <p className="text-gray-500 mb-6">Masuk ke Portal Tugas Akademik</p>
 
-      <Select
-        label="Role"
-        name="role"
-        value={formData.role}
-        onChange={handleInputChange}
-        options={roleOptions}
-        error={errors.role}
-        required
-      />
+        <form onSubmit={handleSubmit} className="space-y-4 text-left">
+          {errors.general && (
+            <div className="bg-red-100 border border-red-300 text-red-600 px-4 py-2 rounded-lg">
+              {errors.general}
+            </div>
+          )}
 
-      <Input
-        label="Email"
-        type="email"
-        name="email"
-        value={formData.email}
-        onChange={handleInputChange}
-        placeholder="Masukkan email Anda"
-        error={errors.email}
-        required
-      />
+          <div>
+            <input
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleInputChange}
+              placeholder="Email"
+              className="w-full border-2 border-lime-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-pink-500"
+            />
+            {errors.email && (
+              <p className="text-sm text-red-500 mt-1">{errors.email}</p>
+            )}
+          </div>
 
-      <Input
-        label="Password"
-        type="password"
-        name="password"
-        value={formData.password}
-        onChange={handleInputChange}
-        placeholder="Masukkan password Anda"
-        error={errors.password}
-        required
-      />
+          <div>
+            <input
+              type="password"
+              name="password"
+              value={formData.password}
+              onChange={handleInputChange}
+              placeholder="Password"
+              className="w-full border-2 border-lime-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-pink-500"
+            />
+            {errors.password && (
+              <p className="text-sm text-red-500 mt-1">{errors.password}</p>
+            )}
+          </div>
 
-      <Button type="submit" className="w-full" disabled={isLoading}>
-        {isLoading ? "Memproses..." : "Login"}
-      </Button>
+          <button
+            type="submit"
+            disabled={loginMutation.isPending}
+            className="w-full bg-pink-500 hover:bg-pink-600 text-white font-semibold py-2 rounded-lg transition"
+          >
+            {loginMutation.isPending ? "Memproses..." : "Login"}
+          </button>
+        </form>
 
-      <div className="text-center">
-        <p className="text-muted-foreground">
+        <p className="text-gray-500 mt-4 text-sm">
           Belum punya akun?{" "}
-          <Link to="/register" className="text-primary hover:text-secondary font-medium transition-colors">
-            Daftar di sini
+          <Link
+            to="/register"
+            className="text-pink-500 hover:underline font-medium"
+          >
+            Daftar disini
           </Link>
         </p>
+
+        <Link
+          to="/"
+          className="block mt-4 border-2 border-lime-300 text-gray-600 py-2 rounded-lg hover:bg-lime-50 transition"
+        >
+          Kembali
+        </Link>
       </div>
-    </form>
+    </div>
   )
 }

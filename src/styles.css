@@ -1,5 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap");
-
+@import 'tailwindcss';
 :root {
   /* Color Palette */
   --primary-pink: #F72C5B;
@@ -646,4 +646,5 @@ button:disabled {
 /* Ensure Poppins is applied everywhere */
 *, *::before, *::after {
   font-family: "Poppins", system-ui, -apple-system, sans-serif !important;
+}
 }
