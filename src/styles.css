@@ -54,8 +54,6 @@ html {
   margin: 0;
   font-family: "Poppins", sans-serif;
 }
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
-@import 'tailwindcss';
 
 /* Reset and base styles */
 *,
@@ -65,11 +63,6 @@ html {
 }
 
 * {
-  margin: 0;
-  font-family: "Poppins", sans-serif;
-}
-
-body {
   margin: 0;
   background-color: var(--white);
   font-family: var(--font-family);
@@ -609,6 +602,10 @@ button:disabled {
   -webkit-box-orient: vertical;
   overflow: hidden;
   line-height: 1.5;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   background-color: #ffffff;
