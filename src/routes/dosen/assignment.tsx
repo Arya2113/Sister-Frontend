@@ -2,49 +2,67 @@
 
 import { createFileRoute } from "@tanstack/react-router"
 import { useState } from "react"
+import { useQuery, useQueryClient } from "@tanstack/react-query"
+import {
+  getAssignmentsOptions,
+  getAssignmentsQueryKey,
+} from "../../client/@tanstack/react-query.gen"
 
 export const Route = createFileRoute("/dosen/assignment")({
   component: AssignmentsList,
 })
 
-// Mock data for assignments
-const mockAssignments = [
-  {
-    id: 1,
-    title: "Algoritma Pemrograman - Sorting",
-    description: "Implementasi algoritma sorting (bubble sort, quick sort, merge sort)",
-    deadline: "2024-01-15T23:59",
-    submissions: 15,
-    totalStudents: 20,
-    status: "active",
-  },
-  {
-    id: 2,
-    title: "Struktur Data - Linked List",
-    description: "Membuat implementasi linked list dengan operasi insert, delete, dan search",
-    deadline: "2024-01-20T23:59",
-    submissions: 8,
-    totalStudents: 20,
-    status: "active",
-  },
-  {
-    id: 3,
-    title: "Database - ERD Design",
-    description: "Merancang Entity Relationship Diagram untuk sistem perpustakaan",
-    deadline: "2024-01-10T23:59",
-    submissions: 20,
-    totalStudents: 20,
-    status: "closed",
-  },
-]
-
 function AssignmentsList() {
-  const [assignments] = useState(mockAssignments)
-  const [filter, setFilter] = useState("all")
+  const [filter, setFilter] = useState<"all" | "active" | "closed">("all")
+  const [selectedAssignment, setSelectedAssignment] = useState<any | null>(null)
+
+  const token =
+    "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInJvbGUiOiJkb3NlbiIsImlhdCI6MTc1Nzk5OTc1MCwiZXhwIjoxNzU4MDAwNjUwfQ.muB5JfFKDSf2TBrA6ih7EWYu0g7axhRxAVhprFpZlho"
+
+  const queryClient = useQueryClient()
+
+  const options = getAssignmentsOptions({
+    headers: { Authorization: token },
+  })
+
+  const { data, isLoading, isError, error } = useQuery({
+    queryKey: getAssignmentsQueryKey(),
+    queryFn: ({ signal }) =>
+      options.queryFn?.({
+        queryKey: getAssignmentsQueryKey(),
+        signal,
+        client: queryClient,
+        meta: undefined,
+      }) ?? Promise.reject("queryFn tidak tersedia"),
+  })
+
+  // helper: cari field dengan beberapa kemungkinan nama
+  const getField = (obj: any, keys: string[]) => {
+    if (!obj) return undefined
+    for (const k of keys) {
+      if (obj[k] !== undefined && obj[k] !== null) return obj[k]
+    }
+    return undefined
+  }
+
+  const formatDate = (val: any) => {
+    if (val === undefined || val === null || val === "") return "-"
+    try {
+      const d = typeof val === "number" ? new Date(val) : new Date(String(val))
+      if (isNaN(d.getTime())) return String(val)
+      return d.toLocaleString("id-ID")
+    } catch {
+      return String(val)
+    }
+  }
+
+  const assignments: any[] =
+    (data?.data as any)?.assignments ?? (Array.isArray(data) ? data : [])
 
   const filteredAssignments = assignments.filter((assignment) => {
     if (filter === "all") return true
-    return assignment.status === filter
+    const status = assignment.status ?? (assignment.closed ? "closed" : "active")
+    return status === filter
   })
 
   const getStatusColor = (status: string) => {
@@ -59,129 +77,144 @@ function AssignmentsList() {
   }
 
   const getProgressColor = (submissions: number, total: number) => {
-    const percentage = (submissions / total) * 100
+    const percentage = total > 0 ? (submissions / total) * 100 : 0
     if (percentage >= 80) return "bg-[#A7D477]"
     if (percentage >= 50) return "bg-[#FF748B]"
     return "bg-[#F72C5B]"
   }
 
+  if (isLoading) {
+    return <div className="text-center py-12 text-gray-500">Sedang memuat data tugas...</div>
+  }
+
+  if (isError) {
+    return <div className="text-center py-12 text-red-500">
+      Gagal memuat data: {error instanceof Error ? error.message : "Unknown error"}
+    </div>
+  }
+
   return (
     <div className="space-y-6">
-      <div className="border-b border-gray-200 pb-4">
-        <h1 className="text-3xl font-bold text-gray-900">Daftar Tugas</h1>
-        <p className="text-gray-600 mt-2">Kelola dan pantau tugas yang telah dikumpulkan mahasiswa</p>
-      </div>
-
-      {/* Filter Tabs */}
+      {/* Filter */}
       <div className="flex space-x-1 bg-gray-100 p-1 rounded-lg w-fit">
-        <button
-          onClick={() => setFilter("all")}
-          className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-            filter === "all" ? "bg-white text-[#F72C5B] shadow-sm" : "text-gray-600 hover:text-gray-900"
-          }`}
-        >
-          Semua
-        </button>
-        <button
-          onClick={() => setFilter("active")}
-          className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-            filter === "active" ? "bg-white text-[#F72C5B] shadow-sm" : "text-gray-600 hover:text-gray-900"
-          }`}
-        >
-          Aktif
-        </button>
-        <button
-          onClick={() => setFilter("closed")}
-          className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-            filter === "closed" ? "bg-white text-[#F72C5B] shadow-sm" : "text-gray-600 hover:text-gray-900"
-          }`}
-        >
-          Selesai
-        </button>
+        {["all", "active", "closed"].map((tab) => (
+          <button
+            key={tab}
+            onClick={() => setFilter(tab as "all" | "active" | "closed")}
+            className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+              filter === tab
+                ? "bg-white text-[#F72C5B] shadow-sm"
+                : "text-gray-600 hover:text-gray-900"
+            }`}
+          >
+            {tab === "all" ? "Semua" : tab === "active" ? "Aktif" : "Selesai"}
+          </button>
+        ))}
       </div>
 
       {/* Assignments Grid */}
       <div className="grid gap-6">
-        {filteredAssignments.map((assignment) => (
-          <div
-            key={assignment.id}
-            className="bg-white rounded-lg border border-gray-200 p-6 hover:shadow-md transition-shadow"
-          >
-            <div className="flex items-start justify-between mb-4">
-              <div className="flex-1">
-                <div className="flex items-center gap-3 mb-2">
-                  <h3 className="text-xl font-semibold text-gray-900">{assignment.title}</h3>
-                  <span className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(assignment.status)}`}>
-                    {assignment.status === "active" ? "Aktif" : "Selesai"}
-                  </span>
+        {filteredAssignments.map((assignment) => {
+          const name = getField(assignment, ["nama", "name", "title"]) ?? "Tanpa Judul"
+          const description = getField(assignment, ["description", "desc", "keterangan", "deskripsi", "detail", "details", "body"]) ?? "-"
+          const submissions = Number(getField(assignment, ["submittedCount", "submissions", "submitted"]) ?? 0)
+          const totalStudents = Number(getField(assignment, ["totalStudents", "total", "students"]) ?? 1)
+          const status = getField(assignment, ["status"]) ?? (assignment.closed ? "closed" : "active")
+          const deadlineRaw = getField(assignment, ["deadline", "dueDate", "due_date", "dueAt", "due", "deadlineAt", "due_at"])
+          const deadline = formatDate(deadlineRaw)
+
+          const key = assignment.id ?? assignment._id ?? assignment.tempId ?? Math.random()
+          const pct = Math.max(0, Math.min(100, totalStudents > 0 ? (submissions / totalStudents) * 100 : 0))
+
+          return (
+            <div key={key} className="bg-white rounded-lg border border-gray-200 p-6 hover:shadow-md transition-shadow">
+              <div className="flex items-start justify-between mb-4">
+                <div className="flex-1">
+                  <div className="flex items-center gap-3 mb-2">
+                    <h3 className="text-xl font-semibold text-gray-900">
+                      {name}
+                    </h3>
+                    <span className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(status)}`}>
+                      {status === "active" ? "Aktif" : "Selesai"}
+                    </span>
+                  </div>
+                  <p className="text-sm text-gray-500 mb-2">Deadline: {deadline}</p>
+                  <p className="text-gray-600 mb-3">{description}</p>
                 </div>
-                <p className="text-gray-600 mb-3">{assignment.description}</p>
-                <p className="text-sm text-gray-500">
-                  Deadline:{" "}
-                  {new Date(assignment.deadline).toLocaleDateString("id-ID", {
-                    day: "numeric",
-                    month: "long",
-                    year: "numeric",
-                    hour: "2-digit",
-                    minute: "2-digit",
-                  })}
-                </p>
               </div>
-            </div>
 
-            {/* Progress Bar */}
-            <div className="mb-4">
-              <div className="flex justify-between text-sm text-gray-600 mb-2">
-                <span>Pengumpulan</span>
-                <span>
-                  {assignment.submissions}/{assignment.totalStudents} mahasiswa
-                </span>
+              {/* Progress */}
+              <div className="mb-4">
+                <div className="flex justify-between text-sm text-gray-600 mb-2">
+                  <span>Pengumpulan</span>
+                  <span>{submissions}/{totalStudents} mahasiswa</span>
+                </div>
+                <div className="w-full bg-gray-200 rounded-full h-2">
+                  <div
+                    className={`h-2 rounded-full transition-all ${getProgressColor(submissions, totalStudents)}`}
+                    style={{ width: `${pct}%` }}
+                  />
+                </div>
               </div>
-              <div className="w-full bg-gray-200 rounded-full h-2">
-                <div
-                  className={`h-2 rounded-full transition-all ${getProgressColor(
-                    assignment.submissions,
-                    assignment.totalStudents,
-                  )}`}
-                  style={{ width: `${(assignment.submissions / assignment.totalStudents) * 100}%` }}
-                />
-              </div>
-            </div>
 
-            {/* Action Buttons */}
-            <div className="flex gap-3">
-              <button className="px-4 py-2 bg-[#F72C5B] text-white rounded-lg hover:bg-[#FF748B] transition-colors text-sm font-medium">
-                Lihat Detail
-              </button>
-              <button className="px-4 py-2 bg-[#A7D477] text-gray-800 rounded-lg hover:bg-[#E4F1AC] transition-colors text-sm font-medium">
-                Unduh Semua
-              </button>
-              {assignment.status === "active" && (
-                <button className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors text-sm font-medium">
-                  Edit Tugas
+              {/* Action Buttons */}
+              <div className="flex gap-3">
+                <button
+                  onClick={() => setSelectedAssignment(assignment)}
+                  className="px-4 py-2 bg-[#F72C5B] text-white rounded-lg hover:bg-[#FF748B] transition-colors text-sm font-medium"
+                >
+                  Lihat Detail
                 </button>
-              )}
+                <button className="px-4 py-2 bg-[#A7D477] text-gray-800 rounded-lg hover:bg-[#E4F1AC] transition-colors text-sm font-medium">
+                  Unduh Semua
+                </button>
+              </div>
             </div>
-          </div>
-        ))}
+          )
+        })}
       </div>
 
-      {filteredAssignments.length === 0 && (
-        <div className="text-center py-12">
-          <div className="text-gray-400 mb-4">
-            <svg className="mx-auto h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-              />
-            </svg>
+      {/* Modal Detail Tugas */}
+      {selectedAssignment && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-xl p-6 w-full max-w-md shadow-lg relative">
+            <h2 className="text-2xl font-bold mb-4 text-gray-900 text-center">Detail Tugas</h2>
+            
+            <div className="space-y-2 text-sm text-gray-700">
+              <p>
+                <span className="font-semibold">Nama Tugas:</span>{" "}
+                {getField(selectedAssignment, ["nama", "name", "title"]) ?? "Tanpa Judul"}
+              </p>
+              <p>
+                <span className="font-semibold">Deskripsi:</span>{" "}
+                {getField(selectedAssignment, ["description", "desc", "keterangan", "deskripsi", "detail", "details", "body"]) ?? "-"}
+              </p>
+              <p>
+                <span className="font-semibold">Deadline:</span>{" "}
+                {formatDate(getField(selectedAssignment, ["deadline", "dueDate", "due_date", "dueAt", "due", "deadlineAt", "due_at"]))}
+              </p>
+              <p>
+                <span className="font-semibold">Tanggal Pembuatan:</span>{" "}
+                {formatDate(getField(selectedAssignment, ["createdAt", "created_at", "created", "updatedAt", "updated_at"]))}
+              </p>
+              <p>
+                <span className="font-semibold">Status:</span>{" "}
+                {getField(selectedAssignment, ["status"]) ?? (selectedAssignment.closed ? "closed" : "active")}
+              </p>
+            </div>
+
+            <div className="mt-6 flex justify-center">
+              <button
+                onClick={() => setSelectedAssignment(null)}
+                className="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300 transition-colors"
+              >
+                Tutup
+              </button>
+            </div>
           </div>
-          <h3 className="text-lg font-medium text-gray-900 mb-2">Tidak ada tugas</h3>
-          <p className="text-gray-600">Belum ada tugas yang sesuai dengan filter yang dipilih.</p>
         </div>
       )}
+
     </div>
   )
 }
