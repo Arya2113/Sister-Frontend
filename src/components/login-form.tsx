@@ -5,6 +5,12 @@ import {
   postLoginMutation,
 } from "@/client/@tanstack/react-query.gen"
 import { useMutation } from "@tanstack/react-query"
+import { jwtDecode } from "jwt-decode"
+
+
+type JwtPayload = {
+  role?: "mahasiswa" | "dosen"
+}
 
 export function LoginForm() {
   const navigate = useNavigate()
@@ -21,7 +27,14 @@ export function LoginForm() {
       if (data.tokens?.accessToken && data.tokens?.refreshToken) {
         authStore.store("accessToken", data.tokens.accessToken)
         authStore.store("refreshToken", data.tokens.refreshToken)
-        navigate({ to: "/dashboard" })
+
+      const decoded = jwtDecode<JwtPayload>(data.tokens.accessToken)
+      if (decoded.role) {
+        const role = decoded.role === "mahasiswa" ? "dosen" : "mahasiswa"
+        localStorage.setItem("role", role)
+      }
+
+        navigate({ to: "/" })
       }
     },
     onError: (err: any) => {

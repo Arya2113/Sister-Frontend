@@ -25,7 +25,7 @@ export function RegisterForm() {
     onSuccess: (data) => {
       console.log("✅ Registrasi berhasil:", data)
       alert("Registrasi berhasil! Silakan login.")
-      navigate({ to: "/login" })
+      navigate({ to: "/login", replace: true })
     },
     onError: (error: any) => {
       console.error("❌ Registrasi gagal:", error)

@@ -1,0 +1,11 @@
+[2025-09-16T15:44:05.987Z] Error: "http://localhost:3001/swagger" is not a valid JSON Schema
+Stack:
+SyntaxError: "http://localhost:3001/swagger" is not a valid JSON Schema
+    at $RefParser.parse (E:\Sister-Frontend\node_modules\@hey-api\json-schema-ref-parser\dist\lib\index.js:212:29)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async $RefParser.bundle (E:\Sister-Frontend\node_modules\@hey-api\json-schema-ref-parser\dist\lib\index.js:122:9)
+    at async Dl (E:\Sister-Frontend\node_modules\@hey-api\openapi-ts\dist\index.cjs:54:2216)
+    at async ra (E:\Sister-Frontend\node_modules\@hey-api\openapi-ts\dist\index.cjs:54:8226)
+    at async Promise.all (index 0)
+    at async TV (E:\Sister-Frontend\node_modules\@hey-api\openapi-ts\dist\index.cjs:1350:6572)
+    at async start (E:\Sister-Frontend\node_modules\@hey-api\openapi-ts\bin\index.cjs:139:21)

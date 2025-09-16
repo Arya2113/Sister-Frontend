@@ -21,10 +21,10 @@ export const Route = createRootRoute({
   beforeLoad: () => {
     const role = getUserRole()
     if (role === "mahasiswa") {
-      throw redirect({ to: "/mahasiswa" })
+      throw redirect({ to: "/Mahasiswa/dashboard" })
     }
     if (role === "dosen") {
-      throw redirect({ to: "/dosen" })
+      throw redirect({ to: "/dosen/dashboard" })
     }
     // kalau belum ada role → biarkan tetap di /
   },
