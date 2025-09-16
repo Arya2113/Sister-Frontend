@@ -60,7 +60,7 @@ function AddAssignment() {
       deadline: isoDeadline,
     },
     headers: {
-      Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInJvbGUiOiJkb3NlbiIsImlhdCI6MTc1NzkyNzIxOSwiZXhwIjoxNzU3OTI4MTE5fQ.kcRNoIQAiMMenMYUgAv830czzdVOTkzrgZ42ly6UCkA",
+      Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInJvbGUiOiJkb3NlbiIsImlhdCI6MTc1Nzk5OTc1MCwiZXhwIjoxNzU4MDAwNjUwfQ.muB5JfFKDSf2TBrA6ih7EWYu0g7axhRxAVhprFpZlho",
     },
   });
 };

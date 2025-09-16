@@ -3,8 +3,8 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import {
-  getAssignmentQueryKey,
-  getAssignmentOptions,
+  getAssignmentsQueryKey,
+  getAssignmentsOptions,
 } from "@/client/@tanstack/react-query.gen";
 
 export const Route = createFileRoute("/dosen/dashboard")({
@@ -20,19 +20,19 @@ type Assignment = {
 
 function DosenDashboard() {
   const token =
-    "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInJvbGUiOiJkb3NlbiIsImlhdCI6MTc1NzkyNzIxOSwiZXhwIjoxNzU3OTI4MTE5fQ.kcRNoIQAiMMenMYUgAv830czzdVOTkzrgZ42ly6UCkA";
+    "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInJvbGUiOiJkb3NlbiIsImlhdCI6MTc1Nzk5OTc1MCwiZXhwIjoxNzU4MDAwNjUwfQ.muB5JfFKDSf2TBrA6ih7EWYu0g7axhRxAVhprFpZlho";
 
   const queryClient = useQueryClient();
 
-  const options = getAssignmentOptions({
+  const options = getAssignmentsOptions({
     headers: { Authorization: token },
   });
 
   const { data, isLoading, isError } = useQuery({
-    queryKey: getAssignmentQueryKey(),
+    queryKey: getAssignmentsQueryKey(),
     queryFn: ({ signal }) =>
       options.queryFn?.({
-        queryKey: getAssignmentQueryKey(),
+        queryKey: getAssignmentsQueryKey(),
         signal,
         client: queryClient,
         meta: undefined,
