@@ -67,18 +67,14 @@ export function LoginForm() {
   }
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-50">
-      <div className="bg-white p-8 rounded-2xl shadow-lg w-full max-w-sm text-center">
-        <h1 className="text-2xl font-bold text-pink-600 mb-2">Login</h1>
-        <p className="text-gray-500 mb-6">Masuk ke Portal Tugas Akademik</p>
-
-        <form onSubmit={handleSubmit} className="space-y-4 text-left">
+    <div style={{ minHeight: '100vh', background: '#fff', fontFamily: 'Poppins, sans-serif', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <div style={{ background: '#fff', borderRadius: '1.5rem', boxShadow: '0 10px 32px rgba(247,44,91,0.08)', padding: '2.5rem 2rem', width: '100%', maxWidth: 400, textAlign: 'center', fontFamily: 'Poppins, sans-serif' }}>
+        <h1 style={{ fontSize: '2rem', fontWeight: 700, color: '#F72C5B', marginBottom: 8 }}>Login</h1>
+        <p style={{ color: '#FF748B', marginBottom: 24 }}>Masuk ke Portal Tugas Akademik</p>
+        <form onSubmit={handleSubmit} style={{ textAlign: 'left', display: 'flex', flexDirection: 'column', gap: 16 }}>
           {errors.general && (
-            <div className="bg-red-100 border border-red-300 text-red-600 px-4 py-2 rounded-lg">
-              {errors.general}
-            </div>
+            <div style={{ background: '#FF748B22', border: '1.5px solid #F72C5B', color: '#F72C5B', padding: '10px 16px', borderRadius: 10, fontSize: 14, marginBottom: 4 }}>{errors.general}</div>
           )}
-
           <div>
             <input
               type="email"
@@ -86,13 +82,12 @@ export function LoginForm() {
               value={formData.email}
               onChange={handleInputChange}
               placeholder="Email"
-              className="w-full border-2 border-lime-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-pink-500"
+              style={{ width: '100%', border: '2px solid #E4F1AC', borderRadius: 10, padding: '12px 14px', fontSize: 15, outline: 'none', fontFamily: 'Poppins, sans-serif', background: '#fff', color: '#222', marginBottom: 2, transition: 'border-color 0.2s' }}
+              onFocus={e => (e.target.style.borderColor = '#A7D477')}
+              onBlur={e => (e.target.style.borderColor = '#E4F1AC')}
             />
-            {errors.email && (
-              <p className="text-sm text-red-500 mt-1">{errors.email}</p>
-            )}
+            {errors.email && <p style={{ color: '#F72C5B', fontSize: 13, marginTop: 2 }}>{errors.email}</p>}
           </div>
-
           <div>
             <input
               type="password"
@@ -100,35 +95,27 @@ export function LoginForm() {
               value={formData.password}
               onChange={handleInputChange}
               placeholder="Password"
-              className="w-full border-2 border-lime-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-pink-500"
+              style={{ width: '100%', border: '2px solid #E4F1AC', borderRadius: 10, padding: '12px 14px', fontSize: 15, outline: 'none', fontFamily: 'Poppins, sans-serif', background: '#fff', color: '#222', marginBottom: 2, transition: 'border-color 0.2s' }}
+              onFocus={e => (e.target.style.borderColor = '#A7D477')}
+              onBlur={e => (e.target.style.borderColor = '#E4F1AC')}
             />
-            {errors.password && (
-              <p className="text-sm text-red-500 mt-1">{errors.password}</p>
-            )}
+            {errors.password && <p style={{ color: '#F72C5B', fontSize: 13, marginTop: 2 }}>{errors.password}</p>}
           </div>
-
           <button
             type="submit"
             disabled={loginMutation.isPending}
-            className="w-full bg-pink-500 hover:bg-pink-600 text-white font-semibold py-2 rounded-lg transition"
+            style={{ width: '100%', background: loginMutation.isPending ? '#FF748B' : '#F72C5B', color: '#fff', fontWeight: 600, padding: '12px 0', borderRadius: 10, border: 'none', fontSize: 16, marginTop: 4, cursor: loginMutation.isPending ? 'not-allowed' : 'pointer', transition: 'background 0.2s' }}
           >
-            {loginMutation.isPending ? "Memproses..." : "Login"}
+            {loginMutation.isPending ? 'Memproses...' : 'Login'}
           </button>
         </form>
-
-        <p className="text-gray-500 mt-4 text-sm">
-          Belum punya akun?{" "}
-          <Link
-            to="/register"
-            className="text-pink-500 hover:underline font-medium"
-          >
-            Daftar disini
-          </Link>
+        <p style={{ color: '#A7D477', marginTop: 18, fontSize: 14 }}>
+          Belum punya akun?{' '}
+          <Link to="/register" style={{ color: '#F72C5B', fontWeight: 500, textDecoration: 'underline', textUnderlineOffset: 2 }}>Daftar disini</Link>
         </p>
-
         <Link
           to="/"
-          className="block mt-4 border-2 border-lime-300 text-gray-600 py-2 rounded-lg hover:bg-lime-50 transition"
+          style={{ display: 'block', marginTop: 18, border: '2px solid #E4F1AC', color: '#A7D477', padding: '10px 0', borderRadius: 10, fontWeight: 500, background: '#fff', textDecoration: 'none', transition: 'background 0.2s' }}
         >
           Kembali
         </Link>

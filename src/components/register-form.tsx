@@ -14,7 +14,6 @@ export function RegisterForm() {
     fullName: "",
     email: "",
     password: "",
-    confirmPassword: "",
     role: "mahasiswa",
     studentId: "",
     lecturerId: "",
@@ -59,11 +58,6 @@ export function RegisterForm() {
     } else if (formData.password.length < 6) {
       newErrors.password = "Password minimal 6 karakter"
     }
-    if (!formData.confirmPassword) {
-      newErrors.confirmPassword = "Konfirmasi password harus diisi"
-    } else if (formData.password !== formData.confirmPassword) {
-      newErrors.confirmPassword = "Password tidak cocok"
-    }
     if (!formData.role) newErrors.role = "Role harus dipilih"
     if (formData.role === "mahasiswa" && !formData.studentId) {
       newErrors.studentId = "NIM harus diisi"
@@ -98,121 +92,97 @@ registerMutation.mutate({
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4">
-      <div className="w-full max-w-md rounded-2xl bg-white p-8 shadow-lg">
-        <h2 className="mb-6 text-center text-2xl font-bold text-gray-800">
-          Daftar Akun
-        </h2>
-
-        <form onSubmit={handleSubmit} className="space-y-3">
+    <div style={{ minHeight: '100vh', background: '#fff', fontFamily: 'Poppins, sans-serif', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 16 }}>
+      <div style={{ background: '#fff', borderRadius: '1.5rem', boxShadow: '0 10px 32px rgba(247,44,91,0.08)', padding: '2.5rem 2rem', width: '100%', maxWidth: 420, fontFamily: 'Poppins, sans-serif' }}>
+        <h2 style={{ textAlign: 'center', fontSize: '2rem', fontWeight: 700, color: '#F72C5B', marginBottom: 18 }}>Register</h2>
+        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
           {errors.general && (
-            <div className="mx-auto max-w-xs bg-red-100 border border-red-300 text-red-600 px-3 py-2 rounded-lg text-sm">
-              {errors.general}
-            </div>
+            <div style={{ background: '#FF748B22', border: '1.5px solid #F72C5B', color: '#F72C5B', padding: '10px 16px', borderRadius: 10, fontSize: 14, marginBottom: 4 }}>{errors.general}</div>
           )}
-
-          {/* Nama Lengkap */}
           <input
             type="text"
             name="fullName"
             placeholder="Nama Lengkap"
             value={formData.fullName}
             onChange={handleChange}
-            className="w-full rounded-xl border border-lime-300 px-3 py-2 text-sm focus:ring focus:ring-lime-100 focus:border-lime-400 outline-none"
+            style={{ width: '100%', border: '2px solid #E4F1AC', borderRadius: 10, padding: '12px 14px', fontSize: 15, outline: 'none', fontFamily: 'Poppins, sans-serif', background: '#fff', color: '#222', marginBottom: 2, transition: 'border-color 0.2s' }}
+            onFocus={e => (e.target.style.borderColor = '#A7D477')}
+            onBlur={e => (e.target.style.borderColor = '#E4F1AC')}
           />
-          {errors.fullName && <p className="text-red-500 text-xs">{errors.fullName}</p>}
-
-          {/* Email */}
+          {errors.fullName && <p style={{ color: '#F72C5B', fontSize: 13, marginTop: 2 }}>{errors.fullName}</p>}
           <input
             type="email"
             name="email"
             placeholder="Email"
             value={formData.email}
             onChange={handleChange}
-            className="w-full rounded-xl border border-lime-300 px-3 py-2 text-sm focus:ring focus:ring-lime-100 focus:border-lime-400 outline-none"
+            style={{ width: '100%', border: '2px solid #E4F1AC', borderRadius: 10, padding: '12px 14px', fontSize: 15, outline: 'none', fontFamily: 'Poppins, sans-serif', background: '#fff', color: '#222', marginBottom: 2, transition: 'border-color 0.2s' }}
+            onFocus={e => (e.target.style.borderColor = '#A7D477')}
+            onBlur={e => (e.target.style.borderColor = '#E4F1AC')}
           />
-          {errors.email && <p className="text-red-500 text-xs">{errors.email}</p>}
-
-          {/* Password */}
+          {errors.email && <p style={{ color: '#F72C5B', fontSize: 13, marginTop: 2 }}>{errors.email}</p>}
           <input
             type="password"
             name="password"
             placeholder="Password"
             value={formData.password}
             onChange={handleChange}
-            className="w-full rounded-xl border border-lime-300 px-3 py-2 text-sm focus:ring focus:ring-lime-100 focus:border-lime-400 outline-none"
+            style={{ width: '100%', border: '2px solid #E4F1AC', borderRadius: 10, padding: '12px 14px', fontSize: 15, outline: 'none', fontFamily: 'Poppins, sans-serif', background: '#fff', color: '#222', marginBottom: 2, transition: 'border-color 0.2s' }}
+            onFocus={e => (e.target.style.borderColor = '#A7D477')}
+            onBlur={e => (e.target.style.borderColor = '#E4F1AC')}
           />
-          {errors.password && <p className="text-red-500 text-xs">{errors.password}</p>}
-
-          {/* Konfirmasi Password */}
-          <input
-            type="password"
-            name="confirmPassword"
-            placeholder="Konfirmasi Password"
-            value={formData.confirmPassword}
-            onChange={handleChange}
-            className="w-full rounded-xl border border-lime-300 px-3 py-2 text-sm focus:ring focus:ring-lime-100 focus:border-lime-400 outline-none"
-          />
-          {errors.confirmPassword && (
-            <p className="text-red-500 text-xs">{errors.confirmPassword}</p>
-          )}
-
-          {/* Role */}
+          {errors.password && <p style={{ color: '#F72C5B', fontSize: 13, marginTop: 2 }}>{errors.password}</p>}
           <select
             name="role"
             value={formData.role}
             onChange={handleChange}
-            className="w-full rounded-xl border border-lime-300 px-3 py-2 text-sm bg-white focus:ring focus:ring-lime-100 focus:border-lime-400 outline-none"
+            style={{ width: '100%', border: '2px solid #E4F1AC', borderRadius: 10, padding: '12px 14px', fontSize: 15, outline: 'none', fontFamily: 'Poppins, sans-serif', background: '#fff', color: '#222', marginBottom: 2, transition: 'border-color 0.2s' }}
+            onFocus={e => (e.target.style.borderColor = '#A7D477')}
+            onBlur={e => (e.target.style.borderColor = '#E4F1AC')}
           >
             <option value="mahasiswa">Mahasiswa</option>
             <option value="dosen">Dosen</option>
           </select>
-          {errors.role && <p className="text-red-500 text-xs">{errors.role}</p>}
-
-          {/* Field Khusus */}
-          {formData.role === "mahasiswa" && (
+          {errors.role && <p style={{ color: '#F72C5B', fontSize: 13, marginTop: 2 }}>{errors.role}</p>}
+          {formData.role === 'mahasiswa' && (
             <input
               type="text"
               name="studentId"
               placeholder="NIM"
               value={formData.studentId}
               onChange={handleChange}
-              className="w-full rounded-xl border border-lime-300 px-3 py-2 text-sm focus:ring focus:ring-lime-100 focus:border-lime-400 outline-none"
+              style={{ width: '100%', border: '2px solid #E4F1AC', borderRadius: 10, padding: '12px 14px', fontSize: 15, outline: 'none', fontFamily: 'Poppins, sans-serif', background: '#fff', color: '#222', marginBottom: 2, transition: 'border-color 0.2s' }}
+              onFocus={e => (e.target.style.borderColor = '#A7D477')}
+              onBlur={e => (e.target.style.borderColor = '#E4F1AC')}
             />
           )}
-          {formData.role === "dosen" && (
+          {formData.role === 'dosen' && (
             <input
               type="text"
               name="lecturerId"
               placeholder="NIP"
               value={formData.lecturerId}
               onChange={handleChange}
-              className="w-full rounded-xl border border-lime-300 px-3 py-2 text-sm focus:ring focus:ring-lime-100 focus:border-lime-400 outline-none"
+              style={{ width: '100%', border: '2px solid #E4F1AC', borderRadius: 10, padding: '12px 14px', fontSize: 15, outline: 'none', fontFamily: 'Poppins, sans-serif', background: '#fff', color: '#222', marginBottom: 2, transition: 'border-color 0.2s' }}
+              onFocus={e => (e.target.style.borderColor = '#A7D477')}
+              onBlur={e => (e.target.style.borderColor = '#E4F1AC')}
             />
           )}
-
-          {/* Submit Button */}
           <button
             type="submit"
             disabled={registerMutation.isPending}
-            className="w-full rounded-xl bg-rose-500 px-3 py-2 text-sm font-semibold text-white hover:bg-rose-600 transition disabled:opacity-70"
+            style={{ width: '100%', background: registerMutation.isPending ? '#FF748B' : '#F72C5B', color: '#fff', fontWeight: 600, padding: '12px 0', borderRadius: 10, border: 'none', fontSize: 16, marginTop: 4, cursor: registerMutation.isPending ? 'not-allowed' : 'pointer', transition: 'background 0.2s' }}
           >
-            {registerMutation.isPending ? "Memproses..." : "Daftar Sekarang"}
+            {registerMutation.isPending ? 'Memproses...' : 'Daftar Sekarang'}
           </button>
-
-          {/* Link Login */}
-          <p className="text-sm text-gray-600 text-center">
-            Sudah punya akun?{" "}
-            <Link to="/login" className="text-rose-500 font-medium hover:underline">
-              Masuk disini
-            </Link>
+          <p style={{ color: '#A7D477', marginTop: 10, fontSize: 14, textAlign: 'center' }}>
+            Sudah punya akun?{' '}
+            <Link to="/login" style={{ color: '#F72C5B', fontWeight: 500, textDecoration: 'underline', textUnderlineOffset: 2 }}>Masuk disini</Link>
           </p>
-
-          {/* Tombol Kembali */}
           <button
             type="button"
-            onClick={() => navigate({ to: "/" })}
-            className="w-full rounded-xl border border-lime-300 px-3 py-2 text-sm text-gray-600 hover:bg-gray-50"
+            onClick={() => navigate({ to: '/' })}
+            style={{ width: '100%', border: '2px solid #E4F1AC', color: '#A7D477', padding: '10px 0', borderRadius: 10, fontWeight: 500, background: '#fff', marginTop: 8, cursor: 'pointer', transition: 'background 0.2s' }}
           >
             Kembali
           </button>

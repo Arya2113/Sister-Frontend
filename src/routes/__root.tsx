@@ -17,31 +17,7 @@ export const Route = createRootRoute({
   component: () => (
     <>
       <div className="min-h-screen bg-background">
-        <nav className="bg-card border-b border-border p-4">
-          <div className="max-w-md mx-auto flex justify-center gap-4">
-            <Link
-              to="/role-selection"
-              className="text-foreground hover:text-primary font-medium transition-colors"
-              activeProps={{ className: "text-primary" }}
-            >
-              Role
-            </Link>
-            <Link
-              to="/login"
-              className="text-foreground hover:text-primary font-medium transition-colors"
-              activeProps={{ className: "text-primary" }}
-            >
-              Login
-            </Link>
-            <Link
-              to="/register"
-              className="text-foreground hover:text-primary font-medium transition-colors"
-              activeProps={{ className: "text-primary" }}
-            >
-              Register
-            </Link>
-          </div>
-        </nav>
+        {/* Navigation bar removed as requested */}
         <Outlet />
                    <TanstackDevtools
               config={{
